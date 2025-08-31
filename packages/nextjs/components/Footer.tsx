@@ -1,80 +1,107 @@
-import React from "react";
-import Link from "next/link";
-import { hardhat } from "viem/chains";
-import { CurrencyDollarIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { HeartIcon } from "@heroicons/react/24/outline";
-import { SwitchTheme } from "~~/components/SwitchTheme";
-import { BuidlGuidlLogo } from "~~/components/assets/BuidlGuidlLogo";
-import { Faucet } from "~~/components/scaffold-eth";
-import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
-import { useGlobalState } from "~~/services/store/store";
+"use client";
 
-/**
- * Site footer
- */
-export const Footer = () => {
-  const nativeCurrencyPrice = useGlobalState(state => state.nativeCurrency.price);
-  const { targetNetwork } = useTargetNetwork();
-  const isLocalNetwork = targetNetwork.id === hardhat.id;
+import { Button } from "@/components/ui/button";
+import { 
+  Twitter, 
+  Github, 
+  MessageCircle, 
+  Globe, 
+  Bot,
+  Shield,
+  Zap,
+  Users
+} from "lucide-react";
 
+const Footer = () => {
   return (
-    <div className="min-h-0 py-5 px-1 mb-11 lg:mb-0">
-      <div>
-        <div className="fixed flex justify-between items-center w-full z-10 p-4 bottom-0 left-0 pointer-events-none">
-          <div className="flex flex-col md:flex-row gap-2 pointer-events-auto">
-            {nativeCurrencyPrice > 0 && (
-              <div>
-                <div className="btn btn-primary btn-sm font-normal gap-1 cursor-auto">
-                  <CurrencyDollarIcon className="h-4 w-4" />
-                  <span>{nativeCurrencyPrice.toFixed(2)}</span>
-                </div>
+    <footer className="bg-gray-900 text-white">
+      {/* Main Footer Content */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Company Info */}
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-lg">E</span>
               </div>
-            )}
-            {isLocalNetwork && (
-              <>
-                <Faucet />
-                <Link href="/blockexplorer" passHref className="btn btn-primary btn-sm font-normal gap-1">
-                  <MagnifyingGlassIcon className="h-4 w-4" />
-                  <span>Block Explorer</span>
-                </Link>
-              </>
-            )}
+              <span className="text-xl font-bold">Flow</span>
+            </div>
+            <p className="text-gray-300 text-sm leading-relaxed">
+              Your AI agents powered by Flow. Create, manage, and coordinate with AI assistants for various tasks.
+            </p>
+            <div className="flex space-x-4">
+              <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white hover:bg-gray-800">
+                <Twitter className="w-4 h-4" />
+              </Button>
+              <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white hover:bg-gray-800">
+                <Github className="w-4 h-4" />
+              </Button>
+              <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white hover:bg-gray-800">
+                <MessageCircle className="w-4 h-4" />
+              </Button>
+              <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white hover:bg-gray-800">
+                <Globe className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
-          <SwitchTheme className={`pointer-events-auto ${isLocalNetwork ? "self-end md:self-auto" : ""}`} />
+
+          {/* Product Links */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-lg">Product</h3>
+            <ul className="space-y-2 text-sm">
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">AI Chat</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Identity Management</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Payment Processing</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Credential Verification</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Agent Creation</a></li>
+            </ul>
+          </div>
+
+          {/* Resources */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-lg">Resources</h3>
+            <ul className="space-y-2 text-sm">
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Documentation</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">API Reference</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Developer Tools</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Community</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Blog</a></li>
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-lg">Company</h3>
+            <ul className="space-y-2 text-sm">
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">About Us</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Careers</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Press</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Contact</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Privacy Policy</a></li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div className="w-full">
-        <ul className="menu menu-horizontal w-full">
-          <div className="flex justify-center items-center gap-2 text-sm w-full">
-            <div className="text-center">
-              <a href="https://github.com/scaffold-eth/se-2" target="_blank" rel="noreferrer" className="link">
-                Fork me
-              </a>
+
+      {/* Bottom Bar */}
+      <div className="border-t border-gray-800">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+            <div className="flex items-center space-x-4 text-sm text-gray-400">
+              <span>© 2024 Flow. All rights reserved.</span>
+              <span>•</span>
+              <span>Built with for the blockchain community</span>
             </div>
-            <span>·</span>
-            <div className="flex justify-center items-center gap-2">
-              <p className="m-0 text-center">
-                Built with <HeartIcon className="inline-block h-4 w-4" /> at
-              </p>
-              <a
-                className="flex justify-center items-center gap-1"
-                href="https://buidlguidl.com/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <BuidlGuidlLogo className="w-3 h-5 pb-1" />
-                <span className="link">BuidlGuidl</span>
-              </a>
-            </div>
-            <span>·</span>
-            <div className="text-center">
-              <a href="https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA" target="_blank" rel="noreferrer" className="link">
-                Support
-              </a>
+            <div className="flex items-center space-x-6 text-sm text-gray-400">
+              <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+              <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+              <a href="#" className="hover:text-white transition-colors">Cookie Policy</a>
             </div>
           </div>
-        </ul>
+        </div>
       </div>
-    </div>
+    </footer>
   );
 };
+
+export default Footer;
