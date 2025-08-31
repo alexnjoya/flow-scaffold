@@ -1,80 +1,149 @@
-# 🏗 Scaffold-ETH 2
+# 🌊 Flow Platform Development Scaffold
 
 <h4 align="center">
-  <a href="https://docs.scaffoldeth.io">Documentation</a> |
-  <a href="https://scaffoldeth.io">Website</a>
+  <a href="https://docs.scaffoldeth.io">Scaffold-ETH 2 Docs</a> |
+  <a href="https://scaffoldeth.io">Scaffold-ETH 2 Website</a>
 </h4>
 
-🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
+🧪 A development scaffold for building the **Flow Platform** - a decentralized AI agent financial operations platform built on Ethereum with ENS integration. This scaffold provides a complete development environment for building, testing, and deploying the Flow ecosystem.
 
 ⚙️ Built using NextJS, RainbowKit, Hardhat, Wagmi, Viem, and Typescript.
 
-- ✅ **Contract Hot Reload**: Your frontend auto-adapts to your smart contract as you edit it.
-- 🪝 **[Custom hooks](https://docs.scaffoldeth.io/hooks/)**: Collection of React hooks wrapper around [wagmi](https://wagmi.sh/) to simplify interactions with smart contracts with typescript autocompletion.
-- 🧱 [**Components**](https://docs.scaffoldeth.io/components/): Collection of common web3 components to quickly build your frontend.
-- 🔥 **Burner Wallet & Local Faucet**: Quickly test your application with a burner wallet and local faucet.
-- 🔐 **Integration with Wallet Providers**: Connect to different wallet providers and interact with the Ethereum network.
+## 🎯 Project Overview
 
-![Debug Contracts tab](https://github.com/scaffold-eth/scaffold-eth-2/assets/55535804/b237af0c-5027-4849-a5c1-2e31495cccb1)
+The Flow Platform is designed to enable AI agents with ENS identities, verifiable credentials, cross-border payments, and community governance. This scaffold provides the development foundation for:
 
-## Requirements
+- **🤖 AI Agent Management**: Create and manage AI agents with ENS identities
+- **🆔 Verifiable Credentials**: Issue and verify trust credentials
+- **💰 Cross-border Payments**: Process payments using human-readable ENS names
+- **🏛️ Multi-signature Wallets**: Create named wallets for DAO coordination
+- **🗳️ Community Governance**: Build decentralized autonomous organizations
 
-Before you begin, you need to install the following tools:
+## 🏗️ Architecture
 
-- [Node (>= v20.18.3)](https://nodejs.org/en/download/)
-- Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
+This scaffold includes:
+
+- **Frontend**: NextJS application with RainbowKit wallet integration
+- **Smart Contracts**: Hardhat development environment for Solidity contracts
+- **Testing**: Comprehensive testing framework for contracts and frontend
+- **Deployment**: Automated deployment scripts for multiple networks
+
+## 📁 Project Structure
+
+```
+flow-scaffold/
+├── packages/
+│   ├── nextjs/               # Frontend application
+│   │   ├── src/              # React components and pages
+│   │   ├── public/           # Static assets
+│   │   └── package.json      # Frontend dependencies
+│   └── hardhat/              # Smart contract development
+│       ├── contracts/        # Solidity smart contracts
+│       ├── deploy/           # Deployment scripts
+│       ├── test/             # Contract tests
+│       └── package.json      # Hardhat dependencies
+├── package.json              # Root workspace configuration
+└── README.md                 # This file
+```
+
+## 🚀 Quickstart
+
+### Prerequisites
+
+- [Node.js (>= v20.18.3)](https://nodejs.org/en/download/)
+- [Yarn](https://yarnpkg.com/getting-started/install) (v1 or v2+)
 - [Git](https://git-scm.com/downloads)
 
-## Quickstart
+### Installation
 
-To get started with Scaffold-ETH 2, follow the steps below:
+1. **Install dependencies:**
+   ```bash
+   cd flow-scaffold
+   yarn install
+   ```
 
-1. Install dependencies if it was skipped in CLI:
+2. **Start local blockchain:**
+   ```bash
+   yarn chain
+   ```
+   This starts a local Ethereum network using Hardhat for development and testing.
 
-```
-cd my-dapp-example
-yarn install
-```
+3. **Deploy smart contracts:**
+   ```bash
+   yarn deploy
+   ```
+   Deploys the Flow platform contracts to your local network.
 
-2. Run a local network in the first terminal:
+4. **Start frontend application:**
+   ```bash
+   yarn start
+   ```
+   Visit your app at: `http://localhost:3000`
 
-```
-yarn chain
-```
+## 🧪 Development
 
-This command starts a local Ethereum network using Hardhat. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `packages/hardhat/hardhat.config.ts`.
+### Smart Contract Development
 
-3. On a second terminal, deploy the test contract:
+- **Edit contracts** in `packages/hardhat/contracts/`
+- **Run tests** with `yarn hardhat:test`
+- **Compile contracts** with `yarn hardhat:compile`
+- **Deploy to local network** with `yarn deploy`
 
-```
-yarn deploy
-```
+### Frontend Development
 
-This command deploys a test smart contract to the local network. The contract is located in `packages/hardhat/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/hardhat/deploy` to deploy the contract to the network. You can also customize the deploy script.
+- **Edit pages** in `packages/nextjs/src/`
+- **Add components** in `packages/nextjs/src/components/`
+- **Configure app** in `packages/nextjs/scaffold.config.ts`
 
-4. On a third terminal, start your NextJS app:
+### Testing
 
-```
-yarn start
-```
+- **Contract tests**: `yarn hardhat:test`
+- **Frontend tests**: `yarn next:test` (when implemented)
+- **Type checking**: `yarn hardhat:check-types` and `yarn next:check-types`
 
-Visit your app on: `http://localhost:3000`. You can interact with your smart contract using the `Debug Contracts` page. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
+## 🔧 Configuration
 
-Run smart contract test with `yarn hardhat:test`
+### Hardhat Configuration
 
-- Edit your smart contracts in `packages/hardhat/contracts`
-- Edit your frontend homepage at `packages/nextjs/app/page.tsx`. For guidance on [routing](https://nextjs.org/docs/app/building-your-application/routing/defining-routes) and configuring [pages/layouts](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts) checkout the Next.js documentation.
-- Edit your deployment scripts in `packages/hardhat/deploy`
+Customize your blockchain network settings in `packages/hardhat/hardhat.config.ts`:
 
+- Network configurations
+- Compiler settings
+- Plugin configurations
+- Environment variables
 
-## Documentation
+### NextJS Configuration
 
-Visit our [docs](https://docs.scaffoldeth.io) to learn how to start building with Scaffold-ETH 2.
+Configure your frontend application in `packages/nextjs/scaffold.config.ts`:
 
-To know more about its features, check out our [website](https://scaffoldeth.io).
+- Contract addresses
+- Network configurations
+- Feature flags
+- UI customizations
 
-## Contributing to Scaffold-ETH 2
+## 📚 Documentation
 
-We welcome contributions to Scaffold-ETH 2!
+- **Scaffold-ETH 2**: [docs.scaffoldeth.io](https://docs.scaffoldeth.io)
+- **Flow Platform**: See the main project documentation
+- **Next.js**: [nextjs.org/docs](https://nextjs.org/docs)
+- **Hardhat**: [hardhat.org/docs](https://hardhat.org/docs)
 
-Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH 2.
+## 🤝 Contributing
+
+We welcome contributions to the Flow Platform development scaffold!
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENCE](LICENCE) file for details.
+
+## 🔗 Related Projects
+
+- **Flow Platform**: Main blockchain contracts and platform logic
+- **Flow Client**: Production frontend application
+- **Flow Scaffold**: This development environment
