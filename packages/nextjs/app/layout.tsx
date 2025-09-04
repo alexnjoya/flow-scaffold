@@ -1,4 +1,6 @@
 import "~~/styles/globals.css";
+import { ScaffoldEthAppWithProviders } from "../components/ScaffoldEthAppWithProviders";
+import { ThemeProvider } from "../components/ThemeProvider";
 
 export const metadata = {
   title: "Flow - Decentralized AI Agents",
@@ -11,9 +13,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className="light">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ScaffoldEthAppWithProviders>
+            {children}
+          </ScaffoldEthAppWithProviders>
+        </ThemeProvider>
       </body>
     </html>
   );

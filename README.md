@@ -1,31 +1,33 @@
-# 🌊 Flow Platform Development Scaffold
+# 🤖 FlowAI Development Scaffold
 
 <h4 align="center">
   <a href="https://docs.scaffoldeth.io">Scaffold-ETH 2 Docs</a> |
   <a href="https://scaffoldeth.io">Scaffold-ETH 2 Website</a>
 </h4>
 
-🧪 A development scaffold for building the **Flow Platform** - a decentralized AI agent financial operations platform built on Ethereum with ENS integration. This scaffold provides a complete development environment for building, testing, and deploying the Flow ecosystem.
+🧪 A development scaffold for building **FlowAI** - an AI-powered on-chain autonomous agents platform that helps you perform blockchain activities using plain English commands. This scaffold provides a complete development environment for building, testing, and deploying AI agents that automate on-chain operations.
 
 ⚙️ Built using NextJS, RainbowKit, Hardhat, Wagmi, Viem, and Typescript.
 
 ## 🎯 Project Overview
 
-The Flow Platform is designed to enable AI agents with ENS identities, verifiable credentials, cross-border payments, and community governance. This scaffold provides the development foundation for:
+FlowAI is an AI agents platform that helps you perform on-chain activities such as sending money using plain English, resolving ENS addresses, and more. This scaffold provides the development foundation for:
 
-- **🤖 AI Agent Management**: Create and manage AI agents with ENS identities
-- **🆔 Verifiable Credentials**: Issue and verify trust credentials
-- **💰 Cross-border Payments**: Process payments using human-readable ENS names
-- **🏛️ Multi-signature Wallets**: Create named wallets for DAO coordination
-- **🗳️ Community Governance**: Build decentralized autonomous organizations
+- **🤖 AI-Powered Autonomous Agents**: Create intelligent agents that execute blockchain operations
+- **🗣️ Plain English Commands**: Interact with blockchain using natural language
+- **🌐 ENS Integration**: Resolve and manage ENS addresses automatically
+- **💰 Stablecoin Payments**: Process payments using human-readable commands
+- **🔄 On-Chain Automation**: Automate complex blockchain workflows with AI
 
 ## 🏗️ Architecture
 
 This scaffold includes:
 
-- **Frontend**: NextJS application with RainbowKit wallet integration
-- **Smart Contracts**: Hardhat development environment for Solidity contracts
-- **Testing**: Comprehensive testing framework for contracts and frontend
+- **AI Agent Interface**: NextJS application with natural language processing capabilities
+- **Blockchain Integration**: Hardhat development environment for smart contract automation
+- **ENS Resolution**: Automated ENS address resolution and management
+- **Payment Processing**: Stablecoin payment automation with plain English commands
+- **Testing**: Comprehensive testing framework for AI agents and blockchain interactions
 - **Deployment**: Automated deployment scripts for multiple networks
 
 ## 📁 Project Structure
@@ -33,12 +35,12 @@ This scaffold includes:
 ```
 flow-scaffold/
 ├── packages/
-│   ├── nextjs/               # Frontend application
-│   │   ├── src/              # React components and pages
+│   ├── nextjs/               # AI Agent Interface
+│   │   ├── src/              # React components and AI integration
 │   │   ├── public/           # Static assets
 │   │   └── package.json      # Frontend dependencies
-│   └── hardhat/              # Smart contract development
-│       ├── contracts/        # Solidity smart contracts
+│   └── hardhat/              # Blockchain automation contracts
+│       ├── contracts/        # Solidity smart contracts for AI agents
 │       ├── deploy/           # Deployment scripts
 │       ├── test/             # Contract tests
 │       └── package.json      # Hardhat dependencies
@@ -68,74 +70,74 @@ flow-scaffold/
    ```
    This starts a local Ethereum network using Hardhat for development and testing.
 
-3. **Deploy smart contracts:**
+3. **Deploy AI agent contracts:**
    ```bash
    yarn deploy
    ```
-   Deploys the Flow platform contracts to your local network.
+   Deploys the FlowAI agent contracts to your local network.
 
-4. **Start frontend application:**
+4. **Start AI agent interface:**
    ```bash
    yarn start
    ```
-   Visit your app at: `http://localhost:3000`
+   Visit your AI agent platform at: `http://localhost:3000`
 
 ## 🧪 Development
 
-### Smart Contract Development
+### AI Agent Contract Development
 
-- **Edit contracts** in `packages/hardhat/contracts/`
+- **Edit AI agent contracts** in `packages/hardhat/contracts/`
 - **Run tests** with `yarn hardhat:test`
 - **Compile contracts** with `yarn hardhat:compile`
 - **Deploy to local network** with `yarn deploy`
 
-### Frontend Development
+### AI Agent Interface Development
 
-- **Edit pages** in `packages/nextjs/src/`
-- **Add components** in `packages/nextjs/src/components/`
-- **Configure app** in `packages/nextjs/scaffold.config.ts`
+- **Edit AI interface pages** in `packages/nextjs/src/`
+- **Add AI components** in `packages/nextjs/src/components/`
+- **Configure AI agent settings** in `packages/nextjs/scaffold.config.ts`
 
 ### Testing
 
-- **Contract tests**: `yarn hardhat:test`
-- **Frontend tests**: `yarn next:test` (when implemented)
+- **AI agent contract tests**: `yarn hardhat:test`
+- **AI interface tests**: `yarn next:test` (when implemented)
 - **Type checking**: `yarn hardhat:check-types` and `yarn next:check-types`
 
 ## 🔧 Configuration
 
 ### Hardhat Configuration
 
-Customize your blockchain network settings in `packages/hardhat/hardhat.config.ts`:
+Customize your AI agent blockchain settings in `packages/hardhat/hardhat.config.ts`:
 
-- Network configurations
+- Network configurations for AI agents
 - Compiler settings
 - Plugin configurations
 - Environment variables
 
 ### NextJS Configuration
 
-Configure your frontend application in `packages/nextjs/scaffold.config.ts`:
+Configure your AI agent interface in `packages/nextjs/scaffold.config.ts`:
 
-- Contract addresses
+- AI agent contract addresses
 - Network configurations
-- Feature flags
-- UI customizations
+- AI feature flags
+- Interface customizations
 
 ## 📚 Documentation
 
 - **Scaffold-ETH 2**: [docs.scaffoldeth.io](https://docs.scaffoldeth.io)
-- **Flow Platform**: See the main project documentation
+- **FlowAI Platform**: See the main project documentation
 - **Next.js**: [nextjs.org/docs](https://nextjs.org/docs)
 - **Hardhat**: [hardhat.org/docs](https://hardhat.org/docs)
 
 ## 🤝 Contributing
 
-We welcome contributions to the Flow Platform development scaffold!
+We welcome contributions to the FlowAI development scaffold!
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Add tests for new functionality
+4. Add tests for new AI agent functionality
 5. Submit a pull request
 
 ## 📄 License
@@ -144,6 +146,6 @@ This project is licensed under the MIT License - see the [LICENCE](LICENCE) file
 
 ## 🔗 Related Projects
 
-- **Flow Platform**: Main blockchain contracts and platform logic
-- **Flow Client**: Production frontend application
-- **Flow Scaffold**: This development environment
+- **FlowAI Platform**: Main AI agent contracts and platform logic
+- **FlowAI Client**: Production AI agent frontend application
+- **FlowAI Scaffold**: This development environment

@@ -40,7 +40,7 @@ export function AgentCard({ agent, onSelect, isConnected }: AgentCardProps) {
       case "Payment Agent":
         return "bg-green-100 text-green-800 hover:bg-green-200";
       case "Identity Agent":
-        return "bg-blue-100 text-blue-800 hover:bg-blue-200";
+        return "bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700";
       case "Community Agent":
         return "bg-purple-100 text-purple-800 hover:bg-purple-200";
       case "AI Assistant":

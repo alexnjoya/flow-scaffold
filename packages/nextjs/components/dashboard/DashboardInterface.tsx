@@ -41,6 +41,8 @@ export function DashboardInterface() {
   const [newMessage, setNewMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isRightPanelCollapsed, setIsRightPanelCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [currentPage, setCurrentPage] = useState<'chat' | 'transactions' | 'identity' | 'newAgent' | 'credentials' | 'settings'>('chat');
   const [recentActivities] = useState<RecentActivity[]>([
     {
       id: '1',
@@ -108,25 +110,40 @@ export function DashboardInterface() {
   };
 
   return (
-    <div className="flex h-screen bg-background">
-      <Sidebar />
-      <div className="flex-1 flex flex-col">
-        <div className="flex-1 flex">
-          <div className="flex-1 flex flex-col">
-            <WelcomeSection />
-            <ChatMessages 
-              messages={messages} 
-              handleActionConfirm={handleActionConfirm}
-              handleActionReject={handleActionReject}
-              formatTime={formatTime}
-            />
-            <ChatInput 
-              newMessage={newMessage}
-              setNewMessage={setNewMessage}
-              sendMessage={sendMessage}
-              isProcessing={isProcessing}
-            />
-            <TypingIndicator />
+    <div className="flex h-screen bg-background overflow-hidden">
+      <Sidebar
+        isSidebarCollapsed={isSidebarCollapsed}
+        setIsSidebarCollapsed={setIsSidebarCollapsed}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        isConnected={false}
+        account={null}
+      />
+      <div className="flex-1 flex flex-col min-h-0">
+        <div className="flex-1 flex min-h-0">
+          <div className="flex-1 flex flex-col min-h-0">
+            <div className="flex-shrink-0">
+              <WelcomeSection />
+            </div>
+            <div className="flex-1 min-h-0 flex flex-col">
+              <ChatMessages 
+                messages={messages} 
+                handleActionConfirm={handleActionConfirm}
+                handleActionReject={handleActionReject}
+                formatTime={formatTime}
+              />
+            </div>
+            <div className="flex-shrink-0">
+              <ChatInput 
+                newMessage={newMessage}
+                setNewMessage={setNewMessage}
+                sendMessage={sendMessage}
+                isProcessing={isProcessing}
+              />
+            </div>
+            <div className="flex-shrink-0">
+              <TypingIndicator />
+            </div>
           </div>
           <RightPanel 
             isRightPanelCollapsed={isRightPanelCollapsed}

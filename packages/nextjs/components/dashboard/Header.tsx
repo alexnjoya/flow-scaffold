@@ -50,7 +50,7 @@ const Header = ({
       </div>
 
       {/* Desktop Header */}
-      <div className="hidden md:block px-4 py-2">
+      <div className="hidden md:block px-4 py-[1.7vh]">
         <div className="flex items-center justify-between">
           <div className="flex-1">
             <h3 className="font-semibold text-lg">

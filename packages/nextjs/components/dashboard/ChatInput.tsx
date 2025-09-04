@@ -1,20 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, Paperclip, Mic, FileText } from "lucide-react";
+import { Paperclip, Mic, FileText, Send } from "lucide-react";
 
 interface ChatInputProps {
   newMessage: string;
   setNewMessage: (message: string) => void;
   sendMessage: () => void;
   isProcessing: boolean;
+  onClear?: () => void;
 }
 
-const ChatInput = ({ newMessage, setNewMessage, sendMessage, isProcessing }: ChatInputProps) => {
+const ChatInput = ({ newMessage, setNewMessage, sendMessage, isProcessing, onClear }: ChatInputProps) => {
   // Ensure newMessage is always a string
   const safeMessage = newMessage || "";
   
   return (
-    <div className="border-t border-border p-2 md:p-4 bg-card">
+    <div className="p-1 md:p-2 mb-6 bg-card">
       <div className="max-w-2xl mx-auto w-full">
         <div className="relative">
           <Input
@@ -22,43 +23,38 @@ const ChatInput = ({ newMessage, setNewMessage, sendMessage, isProcessing }: Cha
             value={safeMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-            className="w-full pr-20 md:pr-24 h-10 md:h-12 text-sm md:text-base"
+            className="w-full pr-16 md:pr-20 h-9 md:h-10 text-sm duration-200 border border-border focus:outline-none focus:ring-0 focus:border-border bg-transparent rounded-full"
             disabled={isProcessing}
           />
           
           {/* Action Icons Inside Input */}
           <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
-            <Button variant="ghost" size="sm" className="h-6 w-6 md:h-8 md:w-8 p-0 hover:bg-muted/50 max-sm:hidden">
-              <Paperclip className="w-3 h-3 md:w-4 md:h-4" />
+            {onClear && (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="h-5 w-5 md:h-6 md:w-6 p-0 hover:bg-muted/50 text-muted-foreground"
+                onClick={onClear}
+                title="Clear chat"
+              >
+                <FileText className="w-3 h-3" />
+              </Button>
+            )}
+            <Button variant="ghost" size="sm" className="h-5 w-5 md:h-6 md:w-6 p-0 hover:bg-muted/50 max-sm:hidden">
+              <Paperclip className="w-3 h-3" />
             </Button>
-            <Button variant="ghost" size="sm" className="h-6 w-6 md:h-8 md:w-8 p-0 hover:bg-muted/50 max-sm:hidden">
-              <Mic className="w-3 h-3 md:w-4 md:h-4" />
-            </Button>
-            <Button variant="ghost" size="sm" className="h-6 w-6 md:h-8 md:w-8 p-0 hover:bg-muted/50 max-sm:hidden">
-              <FileText className="w-3 h-3 md:w-4 md:h-4" />
+            <Button variant="ghost" size="sm" className="h-5 w-5 md:h-6 md:w-6 p-0 hover:bg-muted/50 max-sm:hidden">
+              <Mic className="w-3 h-3" />
             </Button>
             <Button 
-              onClick={sendMessage} 
-              disabled={!safeMessage.trim() || isProcessing}
-              className="h-6 w-6 md:h-8 md:w-8 p-0 bg-primary hover:bg-primary/90 text-primary-foreground"
+              onClick={sendMessage}
+              disabled={isProcessing || !safeMessage.trim()}
+              size="sm"
+              className="h-5 w-5 md:h-6 md:w-6 p-0 bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isProcessing ? (
-                <div className="animate-spin rounded-full h-3 w-3 md:h-4 md:w-4 border-b-2 border-white"></div>
-              ) : (
-                <Send className="w-3 h-3 md:w-4 md:h-4" />
-              )}
+              <Send className="w-3 h-3" />
             </Button>
           </div>
-        </div>
-        
-        {/* Character Count and Disclaimer */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-2 md:mt-3 space-y-1 sm:space-y-0">
-          <span className="text-xs text-muted-foreground">
-            {safeMessage.length}/3,000
-          </span>
-          <p className="text-xs text-muted-foreground text-center sm:text-left">
-            Flow Agent may generate inaccurate information about blockchain transactions, addresses, or facts.
-          </p>
         </div>
       </div>
     </div>

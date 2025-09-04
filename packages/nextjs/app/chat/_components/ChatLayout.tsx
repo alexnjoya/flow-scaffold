@@ -8,11 +8,9 @@ interface ChatLayoutProps {
 
 export function ChatLayout({ children }: ChatLayoutProps) {
   return (
-    <div className="min-h-screen bg-background">
-      <main className="flex-1 container mx-auto px-4 py-8">
-        <div className="max-w-7xl mx-auto">
-          {children}
-        </div>
+    <div className="h-screen bg-background overflow-hidden">
+      <main className="h-full">
+        {children}
       </main>
     </div>
   );

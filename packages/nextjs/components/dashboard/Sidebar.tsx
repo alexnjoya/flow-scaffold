@@ -27,7 +27,7 @@ const Sidebar = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div 
-              className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0 relative group cursor-pointer"
+              className="w-8 h-8 bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg flex items-center justify-center flex-shrink-0 relative group cursor-pointer"
               onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
             >
               {isSidebarCollapsed ? (
@@ -140,7 +140,7 @@ const Sidebar = ({
         <div className={`flex items-center ${isSidebarCollapsed ? 'justify-center' : 'space-x-3'}`}>
           <Avatar className="w-8 h-8 flex-shrink-0">
             <AvatarImage src="/api/placeholder/32/32" />
-            <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white">
+            <AvatarFallback className="bg-gradient-to-br from-gray-700 to-gray-800 text-white">
               {isConnected && account ? account.slice(2, 3).toUpperCase() : 'U'}
             </AvatarFallback>
           </Avatar>

@@ -114,7 +114,8 @@ const Settings = () => {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+      {/* Settings Content */}
+      <div className="flex-1 p-4 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="max-w-4xl mx-auto w-full space-y-6">
           {/* Profile Settings */}
           <Card>

@@ -136,7 +136,7 @@ const Credentials = () => {
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'badge': return 'bg-blue-100 text-blue-800';
+      case 'badge': return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
       case 'certification': return 'bg-purple-100 text-purple-800';
       case 'verification': return 'bg-green-100 text-green-800';
       case 'achievement': return 'bg-orange-100 text-orange-800';
@@ -179,8 +179,9 @@ const Credentials = () => {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        <div className="max-w-6xl mx-auto w-full space-y-6">
+      {/* Credentials List */}
+      <div className="flex-1 p-4 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="max-w-6xl mx-auto w-full space-y-4">
           {/* Reputation Overview */}
           <Card>
             <CardHeader>
@@ -301,8 +302,8 @@ const Credentials = () => {
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center space-x-3">
-                  <div className="p-3 bg-blue-100 rounded-lg">
-                    <Award className="w-6 h-6 text-blue-600" />
+                  <div className="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                    <Award className="w-6 h-6 text-gray-600 dark:text-gray-400" />
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Total Credentials</p>

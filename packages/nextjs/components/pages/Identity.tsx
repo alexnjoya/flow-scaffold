@@ -174,8 +174,9 @@ const Identity = () => {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        <div className="max-w-6xl mx-auto w-full space-y-6">
+      {/* Identity Records List */}
+      <div className="flex-1 p-4 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="max-w-6xl mx-auto w-full space-y-4">
           {/* Profile Overview */}
           <Card>
             <CardHeader>

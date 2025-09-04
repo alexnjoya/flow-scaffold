@@ -43,7 +43,7 @@ const RightPanel = ({
               <div className="flex items-start space-x-3">
                 <div className={`w-2 h-2 rounded-full mt-2 ${
                   activity.type === 'payment' ? 'bg-green-500' :
-                  activity.type === 'credential' ? 'bg-blue-500' :
+                  activity.type === 'credential' ? 'bg-gray-500' :
                   'bg-purple-500'
                 }`} />
                 <div className="flex-1 min-w-0">
@@ -73,7 +73,7 @@ const RightPanel = ({
           <MoreHorizontal className="w-4 h-4" />
         </Button>
         <div className="text-center">
-          <div className="w-2 h-2 bg-blue-500 rounded-full mx-auto mb-2"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full mx-auto mb-2"></div>
           <div className="w-2 h-2 bg-green-500 rounded-full mx-auto mb-2"></div>
           <div className="w-2 h-2 bg-purple-500 rounded-full mx-auto"></div>
         </div>
