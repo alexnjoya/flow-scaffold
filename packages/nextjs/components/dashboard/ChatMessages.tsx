@@ -19,8 +19,14 @@ interface ChatMessage {
     type: 'transaction' | 'update' | 'confirmation' | 'ens_operation';
     description: string;
     txHash?: string;
-    status: 'pending' | 'completed' | 'failed';
+    status: 'pending' | 'completed' | 'failed' | 'confirmed';
   }[];
+  metadata?: {
+    ensQuery?: string;
+    action?: any;
+    confidence?: number;
+    suggestions?: string[];
+  };
 }
 
 interface ChatMessagesProps {
@@ -28,13 +34,15 @@ interface ChatMessagesProps {
   handleActionConfirm: (action: any, messageId: string) => void;
   handleActionReject: (messageId: string) => void;
   formatTime: (date: Date) => string;
+  onSuggestionClick?: (suggestion: string) => void;
 }
 
 const ChatMessages = ({ 
   messages, 
   handleActionConfirm, 
   handleActionReject, 
-  formatTime 
+  formatTime,
+  onSuggestionClick
 }: ChatMessagesProps) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -61,6 +69,7 @@ const ChatMessages = ({
               <div className={`flex items-start max-w-[85%] ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                 {/* Message Content */}
                 <div className="space-y-3 flex-1">
+                  {/* All messages as regular chat bubbles */}
                   <div className={`rounded-2xl px-4 py-3 ${
                     message.sender === 'user' 
                       ? 'bg-primary text-primary-foreground' 
@@ -69,13 +78,19 @@ const ChatMessages = ({
                     <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
                   </div>
                   
-                  {/* Actions */}
+                  {/* Actions for all messages */}
                   {message.actions && message.actions.map((action, actionIndex) => (
                     <div key={actionIndex} className="bg-card border rounded-lg p-3 space-y-3">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium">{action.description}</span>
-                        <Badge variant={action.status === 'completed' ? 'default' : action.status === 'pending' ? 'secondary' : 'destructive'} className="text-xs" >
-                          {action.status === 'completed' && <CheckCircle className="w-3 h-3 mr-1" />}
+                        <Badge variant={
+                          action.status === 'completed' || action.status === 'confirmed' 
+                            ? 'default' 
+                            : action.status === 'pending' 
+                              ? 'secondary' 
+                              : 'destructive'
+                        } className="text-xs" >
+                          {(action.status === 'completed' || action.status === 'confirmed') && <CheckCircle className="w-3 h-3 mr-1" />}
                           {action.status}
                         </Badge>
                       </div>
@@ -111,6 +126,25 @@ const ChatMessages = ({
                     </div>
                   ))}
                   
+                  {/* Suggestions */}
+                  {message.metadata?.suggestions && message.metadata.suggestions.length > 0 && (
+                    <div className="space-y-2">
+                      <p className="text-xs text-muted-foreground">Try these commands:</p>
+                      <div className="flex flex-wrap gap-2">
+                        {message.metadata.suggestions.slice(0, 4).map((suggestion, suggestionIndex) => (
+                          <Button
+                            key={suggestionIndex}
+                            variant="outline"
+                            size="sm"
+                            className="text-xs h-7"
+                            onClick={() => onSuggestionClick?.(suggestion)}
+                          >
+                            {suggestion}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search, Filter, Bot, Users, DollarSign, Shield, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useFlowWeb3 } from "../../web3";
+import { useAccount } from "wagmi";
 import { AgentCard } from "./AgentCard";
 
 interface Agent {
@@ -32,7 +32,7 @@ const AgentsDirectory = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   // Web3 integration
-  const { isConnected, account, network } = useFlowWeb3();
+  const { isConnected, address: account } = useAccount();
 
   // Mock data - in real app this would come from blockchain
   useEffect(() => {
@@ -47,7 +47,7 @@ const AgentsDirectory = () => {
         isActive: true,
         rating: 4.8,
         usageCount: 1250,
-        lastActive: new Date(Date.now() - 2 * 60 * 1000),
+        lastActive: new Date("2024-01-15T10:28:00Z"),
       },
       {
         id: "2",
@@ -59,7 +59,7 @@ const AgentsDirectory = () => {
         isActive: true,
         rating: 4.9,
         usageCount: 890,
-        lastActive: new Date(Date.now() - 5 * 60 * 1000),
+        lastActive: new Date("2024-01-15T10:25:00Z"),
       },
       {
         id: "3",
@@ -71,7 +71,7 @@ const AgentsDirectory = () => {
         isActive: true,
         rating: 4.7,
         usageCount: 650,
-        lastActive: new Date(Date.now() - 10 * 60 * 1000),
+        lastActive: new Date("2024-01-15T10:20:00Z"),
       },
       {
         id: "4",
@@ -83,7 +83,7 @@ const AgentsDirectory = () => {
         isActive: true,
         rating: 4.6,
         usageCount: 2100,
-        lastActive: new Date(Date.now() - 1 * 60 * 1000),
+        lastActive: new Date("2024-01-15T10:29:00Z"),
       },
     ];
 

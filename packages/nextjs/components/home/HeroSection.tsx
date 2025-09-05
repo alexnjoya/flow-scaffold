@@ -9,6 +9,7 @@ export function HeroSection() {
   const router = useRouter();
   const [currentText, setCurrentText] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [particlePositions, setParticlePositions] = useState<Array<{left: string, top: string, delay: string, duration: string}>>([]);
 
   const dynamicTexts = [
     "AI Agents",
@@ -23,6 +24,17 @@ export function HeroSection() {
       setCurrentText((prev) => (prev + 1) % dynamicTexts.length);
     }, 3000);
     return () => clearInterval(interval);
+  }, []);
+
+  // Generate particle positions on client side to avoid hydration mismatch
+  useEffect(() => {
+    const positions = [...Array(20)].map(() => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 3}s`,
+      duration: `${2 + Math.random() * 3}s`
+    }));
+    setParticlePositions(positions);
   }, []);
 
   const agentTypes = [
@@ -63,24 +75,24 @@ export function HeroSection() {
         
         {/* Floating Particles */}
         <div className="absolute inset-0">
-          {[...Array(20)].map((_, i) => (
+          {particlePositions.map((position, i) => (
             <div
               key={i}
               className="absolute w-1 h-1 bg-white rounded-full opacity-20 animate-pulse"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${2 + Math.random() * 3}s`
+                left: position.left,
+                top: position.top,
+                animationDelay: position.delay,
+                animationDuration: position.duration
               }}
             />
           ))}
         </div>
 
         {/* Gradient Orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-gray-500/20 to-gray-600/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-gray-600/20 to-gray-700/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-gray-500/10 to-gray-600/10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-gray-500 to-gray-600 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-gray-600 to-gray-700 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-gray-500 to-gray-600 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '2s' }}></div>
       </div>
 
       <div className="relative z-10 container mx-auto px-4 py-24">
@@ -128,7 +140,7 @@ export function HeroSection() {
           <div className={`flex flex-col sm:flex-row gap-6 justify-center mb-20 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <Button
               size="lg"
-              className="text-lg px-10 py-6 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-800 hover:to-gray-900 border-0 rounded-full shadow-2xl hover:shadow-gray-600/25 transition-all duration-300 hover:scale-105"
+              className="text-lg px-10 py-6 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-800 hover:to-gray-900 border-0 rounded-full shadow-2xl hover:shadow-gray-600 transition-all duration-300 hover:scale-105"
               onClick={() => router.push("/onboarding")}
             >
               <Bot className="mr-2 h-5 w-5" />
@@ -155,7 +167,7 @@ export function HeroSection() {
                   className="group cursor-pointer"
                   onClick={() => router.push(agent.href)}
                 >
-                  <div className="relative p-8 rounded-3xl bg-gradient-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-sm border border-gray-700/50 transition-all duration-500 group-hover:scale-105 group-hover:border-gray-500/50 group-hover:shadow-2xl overflow-hidden">
+                  <div className="relative p-8 rounded-3xl bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 transition-all duration-500 group-hover:scale-105 group-hover:border-gray-500 group-hover:shadow-2xl overflow-hidden">
                     {/* Background Pattern */}
                     <div className={`absolute inset-0 ${agent.bgPattern} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
 

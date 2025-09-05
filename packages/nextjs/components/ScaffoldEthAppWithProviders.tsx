@@ -42,23 +42,6 @@ export const ScaffoldEthAppWithProviders = ({ children }: { children: React.Reac
     setMounted(true);
   }, []);
 
-  // Prevent hydration mismatch by not rendering theme-dependent content until mounted
-  if (!mounted) {
-    return (
-      <WagmiProvider config={wagmiConfig}>
-        <QueryClientProvider client={queryClient}>
-          <RainbowKitProvider
-            avatar={BlockieAvatar}
-            theme={lightTheme()}
-          >
-            <ProgressBar height="3px" color="#2299dd" />
-            <ScaffoldEthApp>{children}</ScaffoldEthApp>
-          </RainbowKitProvider>
-        </QueryClientProvider>
-      </WagmiProvider>
-    );
-  }
-
   const isDarkMode = resolvedTheme === "dark";
 
   return (
@@ -66,7 +49,7 @@ export const ScaffoldEthAppWithProviders = ({ children }: { children: React.Reac
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
           avatar={BlockieAvatar}
-          theme={isDarkMode ? darkTheme() : lightTheme()}
+          theme={mounted && isDarkMode ? darkTheme() : lightTheme()}
         >
           <ProgressBar height="3px" color="#2299dd" />
           <ScaffoldEthApp>{children}</ScaffoldEthApp>

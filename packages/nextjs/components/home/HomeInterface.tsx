@@ -32,7 +32,7 @@ export function HomeInterface() {
       isActive: true,
       rating: 4.8,
       usageCount: 1250,
-      lastActive: new Date(Date.now() - 2 * 60 * 1000),
+      lastActive: new Date("2024-01-15T10:30:00Z"),
     },
     {
       id: "2",
@@ -44,7 +44,7 @@ export function HomeInterface() {
       isActive: true,
       rating: 4.9,
       usageCount: 890,
-      lastActive: new Date(Date.now() - 5 * 60 * 1000),
+      lastActive: new Date("2024-01-15T10:25:00Z"),
     },
     {
       id: "3",
@@ -56,7 +56,7 @@ export function HomeInterface() {
       isActive: true,
       rating: 4.7,
       usageCount: 650,
-      lastActive: new Date(Date.now() - 10 * 60 * 1000),
+      lastActive: new Date("2024-01-15T10:20:00Z"),
     },
   ]);
 

@@ -8,35 +8,42 @@ interface WelcomeSectionProps {
 
 const WelcomeSection = ({ 
   isDarkMode = false, 
-  suggestedPrompts = [
-    { text: "Create an agent", color: "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200" },
-    { text: "Send a payment", color: "bg-green-100 text-green-800" },
-    { text: "Verify identity", color: "bg-purple-100 text-purple-800" }
-  ], 
+  suggestedPrompts = [],
   setNewMessage = () => {} 
 }: WelcomeSectionProps) => {
   return (
-    <div className="flex-1 flex flex-col items-center justify-center text-center p-4 space-y-4">
-      <h1 className="text-2xl font-bold  font-serif text-white dark:text-white">
-        Welcome to Flow ENS Assistant
-      </h1>
-      <p className="text-lg text-muted-foreground max-w-xl">
-        I'm your AI-powered ENS assistant. Ask me anything about ENS domains, registration, transfers, and more!
-      </p>
-      
-      {/* Suggested Prompts */}
-      <div className="grid grid-cols-3 gap-2 max-w-lg">
-        {suggestedPrompts.map((prompt, index) => (
-          <Button
-            key={index}
-            variant="outline"
-            className={`h-auto p-3 flex flex-col items-center justify-center ${prompt.color} border-0 hover:scale-105 transition-transform`}
-            onClick={() => setNewMessage(prompt.text)}
-          >
-            <span className="text-xs font-medium">{prompt.text}</span>
-          </Button>
-        ))}
+    <div className="flex-1 flex flex-col items-center justify-center text-center p-4 space-y-8">
+      {/* Header Section */}
+      <div className="space-y-4">
+        <h1 className="text-4xl font-bold text-foreground">
+          Flow ENS Assistant
+        </h1>
+        <p className="text-lg text-muted-foreground max-w-2xl">
+          I'm your AI-powered ENS assistant. I can help you with domain registration, name resolution, record management, and all things ENS!
+        </p>
       </div>
+      
+      {/* Suggested Prompts Section */}
+      {suggestedPrompts.length > 0 && (
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-foreground">
+            Try asking me about:
+          </h3>
+          <div className="flex flex-wrap gap-2 justify-center">
+            {suggestedPrompts.map((prompt, index) => (
+              <Button
+                key={index}
+                variant="outline"
+                className="text-sm"
+                style={{ borderColor: prompt.color }}
+                onClick={() => setNewMessage(prompt.text)}
+              >
+                {prompt.text}
+              </Button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

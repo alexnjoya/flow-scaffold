@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useAccount } from "wagmi";
 import Sidebar from "./Sidebar";
 import WelcomeSection from "./WelcomeSection";
 import ChatMessages from "./ChatMessages";
 import ChatInput from "./ChatInput";
 import RightPanel from "./RightPanel";
 import TypingIndicator from "./TypingIndicator";
+import { useActivities } from "@/hooks/useActivities";
 
 interface ChatMessage {
   id: string;
@@ -37,38 +39,24 @@ interface RecentActivity {
 }
 
 export function DashboardInterface() {
+  const { address, isConnected } = useAccount();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isRightPanelCollapsed, setIsRightPanelCollapsed] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [currentPage, setCurrentPage] = useState<'chat' | 'transactions' | 'identity' | 'newAgent' | 'credentials' | 'settings'>('chat');
-  const [recentActivities] = useState<RecentActivity[]>([
-    {
-      id: '1',
-      title: 'Payment to kwame.agent.eth',
-      description: 'Successfully sent 5 USDC to kwame.agent.eth',
-      type: 'payment',
-      timestamp: new Date(Date.now() - 3 * 60 * 1000),
-    },
-    {
-      id: '2',
-      title: 'Credential verification',
-      description: 'Checked ama.agent.eth credentials',
-      type: 'credential',
-      timestamp: new Date(Date.now() - 2 * 60 * 1000),
-    },
-    {
-      id: '3',
-      title: 'Flow record update',
-      description: 'Updated payment preferences',
-      type: 'transaction',
-      timestamp: new Date(Date.now() - 1 * 60 * 1000),
-    },
-  ]);
+  const [currentPage, setCurrentPage] = useState<'chat' | 'transactions' | 'payments' | 'identity' | 'newEns' | 'credentials'>('chat');
+  
+  // Use real activities from activity manager
+  const { activities: recentActivities, isLoading: activitiesLoading } = useActivities(10);
 
   const formatTime = (date: Date) => {
-    return date.toLocaleString();
+    return date.toLocaleString('en-US', {
+      timeZone: 'UTC',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
   };
 
   const handleActionConfirm = (action: any, messageId: string) => {
@@ -88,18 +76,20 @@ export function DashboardInterface() {
     const message = newMessage.trim();
     setNewMessage('');
     
+    const now = new Date();
     const newChatMessage: ChatMessage = {
-      id: Date.now().toString(),
+      id: `user_${now.getTime()}_${Math.random().toString(36).substr(2, 9)}`,
       content: message,
       sender: 'user',
-      timestamp: new Date(),
+      timestamp: now,
     };
     setMessages(prev => [...prev, newChatMessage]);
     
     // Simulate agent response
     setTimeout(() => {
+      const agentNow = new Date();
       const agentResponse: ChatMessage = {
-        id: (Date.now() + 1).toString(),
+        id: `ai_${agentNow.getTime()}_${Math.random().toString(36).substr(2, 9)}`,
         content: `I received your message: "${message}". How can I help you today?`,
         sender: 'ai',
         timestamp: new Date(),
@@ -116,8 +106,8 @@ export function DashboardInterface() {
         setIsSidebarCollapsed={setIsSidebarCollapsed}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        isConnected={false}
-        account={null}
+        isConnected={isConnected}
+        account={address || null}
       />
       <div className="flex-1 flex flex-col min-h-0">
         <div className="flex-1 flex min-h-0">

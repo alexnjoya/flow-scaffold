@@ -45,7 +45,7 @@ export const RevealBurnerPKModal = () => {
           <label htmlFor="reveal-burner-pk-modal" className="btn btn-ghost btn-sm btn-circle absolute right-3 top-3">
             ✕
           </label>
-          <div>
+          <div className="bg-background border border-border rounded-lg p-6 shadow-lg">
             <p className="text-lg font-semibold m-0 p-0">Copy Burner Wallet Private Key</p>
             <div role="alert" className="alert alert-warning mt-4">
               <ShieldExclamationIcon className="h-6 w-6" />

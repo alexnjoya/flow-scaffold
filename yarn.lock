@@ -191,6 +191,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@base-org/account@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@base-org/account@npm:2.1.0"
+  dependencies:
+    "@noble/hashes": 1.4.0
+    clsx: 1.2.1
+    eventemitter3: 5.0.1
+    idb-keyval: 6.2.1
+    ox: 0.6.9
+    preact: 10.24.2
+    viem: ^2.31.7
+    zustand: 5.0.3
+  checksum: 4f2fd7e0c9ae21b9536b50aa3d5f5fcc14c841b911fe2054086d36e1623e0eefff029f9b6dd312bd4d1ff3ba1a5274f14999ab28d1327c05825324608563a77d
+  languageName: node
+  linkType: hard
+
 "@chainsafe/is-ip@npm:^2.0.1":
   version: 2.1.0
   resolution: "@chainsafe/is-ip@npm:2.1.0"
@@ -6671,6 +6687,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"abitype@npm:1.1.0, abitype@npm:^1.0.9":
+  version: 1.1.0
+  resolution: "abitype@npm:1.1.0"
+  peerDependencies:
+    typescript: ">=5.0.4"
+    zod: ^3.22.0 || ^4.0.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+    zod:
+      optional: true
+  checksum: 55f724d038a60cc5e4ce4913298f912f0c34c53e13240cd3b97b272f4122bdf4c84541d85d1e3bb36f6e8dab6685f232c69600718fad62ccc389bea3f63ed7e4
+  languageName: node
+  linkType: hard
+
 "abitype@npm:^1.0.6, abitype@npm:^1.0.8":
   version: 1.0.9
   resolution: "abitype@npm:1.0.9"
@@ -8098,17 +8129,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"clsx@npm:1.2.1, clsx@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "clsx@npm:1.2.1"
+  checksum: 30befca8019b2eb7dbad38cff6266cf543091dae2825c856a62a8ccf2c3ab9c2907c4d12b288b73101196767f66812365400a227581484a05f968b0307cfaf12
+  languageName: node
+  linkType: hard
+
 "clsx@npm:2.1.1, clsx@npm:^2.1.1":
   version: 2.1.1
   resolution: "clsx@npm:2.1.1"
   checksum: acd3e1ab9d8a433ecb3cc2f6a05ab95fe50b4a3cfc5ba47abb6cbf3754585fcb87b84e90c822a1f256c4198e3b41c7f6c391577ffc8678ad587fc0976b24fd57
-  languageName: node
-  linkType: hard
-
-"clsx@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "clsx@npm:1.2.1"
-  checksum: 30befca8019b2eb7dbad38cff6266cf543091dae2825c856a62a8ccf2c3ab9c2907c4d12b288b73101196767f66812365400a227581484a05f968b0307cfaf12
   languageName: node
   linkType: hard
 
@@ -11475,6 +11506,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"idb-keyval@npm:6.2.1":
+  version: 6.2.1
+  resolution: "idb-keyval@npm:6.2.1"
+  checksum: 7c0836f832096086e99258167740181132a71dd2694c8b8454a4f5ec69114ba6d70983115153306f0b6de1c8d3bad04f67eed3dff8f50c96815b9985d6d78470
+  languageName: node
+  linkType: hard
+
 "idb-keyval@npm:^6.2.1":
   version: 6.2.2
   resolution: "idb-keyval@npm:6.2.2"
@@ -14484,6 +14522,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"openai@npm:^5.19.1":
+  version: 5.19.1
+  resolution: "openai@npm:5.19.1"
+  peerDependencies:
+    ws: ^8.18.0
+    zod: ^3.23.8
+  peerDependenciesMeta:
+    ws:
+      optional: true
+    zod:
+      optional: true
+  bin:
+    openai: bin/cli
+  checksum: 43b165b416c968d5f5cc6c0b233dbaf49dcc49d608c509b4c189a305e81d128054cc4f5f920356c78864fcd2e85401f96b9eeff7308a944d9b9c295f90ab526e
+  languageName: node
+  linkType: hard
+
 "optionator@npm:^0.8.1":
   version: 0.8.3
   resolution: "optionator@npm:0.8.3"
@@ -14564,6 +14619,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ox@npm:0.6.9":
+  version: 0.6.9
+  resolution: "ox@npm:0.6.9"
+  dependencies:
+    "@adraffy/ens-normalize": ^1.10.1
+    "@noble/curves": ^1.6.0
+    "@noble/hashes": ^1.5.0
+    "@scure/bip32": ^1.5.0
+    "@scure/bip39": ^1.4.0
+    abitype: ^1.0.6
+    eventemitter3: 5.0.1
+  peerDependencies:
+    typescript: ">=5.4.0"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 6f35c9710ab3edb8146f0d2a7c482517c8e1cb2adf0cfb7aba23a17209cf7171546ad017cce98dd9e0f60cee5d77ddaaa72961023e4456de093d985b5712c546
+  languageName: node
+  linkType: hard
+
 "ox@npm:0.7.1":
   version: 0.7.1
   resolution: "ox@npm:0.7.1"
@@ -14603,6 +14678,27 @@ __metadata:
     typescript:
       optional: true
   checksum: 577946f69fb8fa2b80fad359ae6e315e459209392109e43313b6bb59a127bdef8eb1844bdd924b87751cc0613d4fe4b64ac08c6e9514d9b7c53367e3f7394a44
+  languageName: node
+  linkType: hard
+
+"ox@npm:0.9.3":
+  version: 0.9.3
+  resolution: "ox@npm:0.9.3"
+  dependencies:
+    "@adraffy/ens-normalize": ^1.11.0
+    "@noble/ciphers": ^1.3.0
+    "@noble/curves": 1.9.1
+    "@noble/hashes": ^1.8.0
+    "@scure/bip32": ^1.7.0
+    "@scure/bip39": ^1.6.0
+    abitype: ^1.0.9
+    eventemitter3: 5.0.1
+  peerDependencies:
+    typescript: ">=5.4.0"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 742a15a3942fa66beac1d0e80ee9ed806c9c4898f950d7e879373eb7068b2b61e983b0f3ea95ec09f7e19637a7978d2cf44ab73ca51007827f5d690f2974910f
   languageName: node
   linkType: hard
 
@@ -15116,6 +15212,13 @@ __metadata:
     picocolors: ^1.1.1
     source-map-js: ^1.2.1
   checksum: eb5d6cbdca24f50399aafa5d2bea489e4caee4c563ea1edd5a2485bc5f84e9ceef3febf170272bc83a99c31d23a316ad179213e853f34c2a7a8ffa534559d63a
+  languageName: node
+  linkType: hard
+
+"preact@npm:10.24.2":
+  version: 10.24.2
+  resolution: "preact@npm:10.24.2"
+  checksum: 429584bbe65d5322b4cd449abd54d61d777f329a23badead36ad510f91d04f42d0615ad2bc4d5e80c3c531be53081932a027ee5f2d6f2805e10666f2ac3d70db
   languageName: node
   linkType: hard
 
@@ -16117,6 +16220,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "se-2@workspace:."
   dependencies:
+    "@base-org/account": ^2.1.0
     "@radix-ui/react-accordion": ^1.2.12
     "@radix-ui/react-alert-dialog": ^1.1.15
     "@radix-ui/react-aspect-ratio": ^1.1.7
@@ -16147,6 +16251,7 @@ __metadata:
     husky: ~9.1.6
     lint-staged: ~13.2.2
     lucide-react: ^0.542.0
+    openai: ^5.19.1
     urql: ^5.0.1
   languageName: unknown
   linkType: soft
@@ -18423,6 +18528,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"viem@npm:^2.31.7":
+  version: 2.37.3
+  resolution: "viem@npm:2.37.3"
+  dependencies:
+    "@noble/curves": 1.9.1
+    "@noble/hashes": 1.8.0
+    "@scure/bip32": 1.7.0
+    "@scure/bip39": 1.6.0
+    abitype: 1.1.0
+    isows: 1.0.7
+    ox: 0.9.3
+    ws: 8.18.3
+  peerDependencies:
+    typescript: ">=5.0.4"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 1755c549081c3c6a2eb1ba3b2f030a4127b0d8d3f8260624b619e7c7b6d36860ceb9b8e3dc8b1023c861abc49e049efdb868dd2cd1893182185fed112d5378d4
+  languageName: node
+  linkType: hard
+
 "wagmi@npm:2.15.6":
   version: 2.15.6
   resolution: "wagmi@npm:2.15.6"
@@ -19072,6 +19198,27 @@ __metadata:
     use-sync-external-store:
       optional: true
   checksum: dc7414de234f9d2c0afad472d6971e9ac32281292faa8ee0910521cad063f84eeeb6f792efab068d6750dab5854fb1a33ac6e9294b796925eb680a59fc1b42f9
+  languageName: node
+  linkType: hard
+
+"zustand@npm:5.0.3":
+  version: 5.0.3
+  resolution: "zustand@npm:5.0.3"
+  peerDependencies:
+    "@types/react": ">=18.0.0"
+    immer: ">=9.0.6"
+    react: ">=18.0.0"
+    use-sync-external-store: ">=1.2.0"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    immer:
+      optional: true
+    react:
+      optional: true
+    use-sync-external-store:
+      optional: true
+  checksum: 72da39ac3017726c3562c615a0f76cee0c9ea678d664f82ee7669f8cb5e153ee81059363473094e4154d73a2935ee3459f6792d1ec9d08d2e72ebe641a16a6ba
   languageName: node
   linkType: hard
 

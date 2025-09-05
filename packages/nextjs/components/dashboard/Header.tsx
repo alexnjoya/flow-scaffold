@@ -1,11 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Bot, Menu } from "lucide-react";
+import { NetworkSwitcher } from "@/components/ui/NetworkSwitcher";
+import { Bot, Menu, Wallet, Sun, Moon } from "lucide-react";
+import { useAccount, useConnect } from "wagmi";
+import { injected } from "wagmi/connectors";
+import { useState, useEffect } from "react";
 
 interface HeaderProps {
   agentName: string | null;
   agentEns: string | null;
-  agentRole: string | null;
   currentPage: string;
   isSidebarCollapsed: boolean;
   setIsSidebarCollapsed: (collapsed: boolean) => void;
@@ -14,11 +17,60 @@ interface HeaderProps {
 const Header = ({ 
   agentName, 
   agentEns, 
-  agentRole, 
   currentPage, 
   isSidebarCollapsed, 
   setIsSidebarCollapsed 
 }: HeaderProps) => {
+  const { address, isConnected } = useAccount();
+  const { connect } = useConnect();
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Initialize theme on component mount
+  useEffect(() => {
+    const isDark = document.documentElement.classList.contains('dark');
+    setIsDarkMode(isDark);
+  }, []);
+
+  // Toggle theme function
+  const toggleTheme = () => {
+    const newTheme = isDarkMode ? 'light' : 'dark';
+    setIsDarkMode(!isDarkMode);
+    
+    if (newTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
+
+  const connectWallet = async () => {
+    try {
+      await connect({ connector: injected() });
+    } catch (error) {
+      console.error('Failed to connect wallet:', error);
+    }
+  };
+
+  const WalletButton = () => {
+    if (!isConnected) {
+      return (
+        <Button 
+          onClick={connectWallet}
+          size="sm"
+          className="bg-primary text-primary-foreground hover:bg-primary"
+        >
+          Connect Wallet
+        </Button>
+      );
+    }
+
+    return (
+      <div className="flex items-center space-x-2 px-3 py-2 border border-border rounded-md bg-background">
+        <Wallet className="w-4 h-4" />
+        <span className="text-xs font-medium">Connected</span>
+      </div>
+    );
+  };
   return (
     <div className="border-b border-border bg-card flex-shrink-0">
       {/* Mobile Header */}
@@ -29,7 +81,7 @@ const Header = ({
               variant="ghost"
               size="sm"
               onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-              className="h-8 w-8 p-0 hover:bg-muted/50"
+              className="h-8 w-8 p-0 hover:bg-muted"
             >
               <Menu className="w-4 h-4" />
             </Button>
@@ -42,10 +94,26 @@ const Header = ({
               )}
             </div>
           </div>
-          <Badge variant="outline" className="border-primary text-primary text-xs">
-            <Bot className="w-3 h-3 mr-1" />
-            {agentRole || "AI Agent"}
-          </Badge>
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleTheme}
+              className="h-8 w-8 p-0 hover:bg-muted"
+            >
+              {isDarkMode ? (
+                <Sun className="w-4 h-4" />
+              ) : (
+                <Moon className="w-4 h-4" />
+              )}
+            </Button>
+            <NetworkSwitcher variant="compact" />
+            <Badge variant="outline" className="border-primary text-primary text-xs">
+              <Bot className="w-3 h-3 mr-1" />
+              AI Agent
+            </Badge>
+            <WalletButton />
+          </div>
         </div>
       </div>
 
@@ -60,10 +128,22 @@ const Header = ({
               <p className="text-sm text-muted-foreground font-mono">{agentEns}</p>
             )}
           </div>
-          <Badge variant="outline" className="border-primary text-primary">
-            <Bot className="w-4 h-4 mr-2" />
-            {agentRole || "AI Agent"}
-          </Badge>
+          <div className="flex items-center space-x-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleTheme}
+              className="h-9 w-9 p-0 hover:bg-muted"
+            >
+              {isDarkMode ? (
+                <Sun className="w-4 h-4" />
+              ) : (
+                <Moon className="w-4 h-4" />
+              )}
+            </Button>
+            <NetworkSwitcher variant="compact" />
+            <WalletButton />
+          </div>
         </div>
       </div>
     </div>

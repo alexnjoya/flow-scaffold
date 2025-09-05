@@ -1,88 +1,40 @@
-// Network configurations
-export const SUPPORTED_NETWORKS = [
-  {
-    chainId: 1,
-    name: 'Ethereum Mainnet',
-    rpcUrl: 'https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY',
-    blockExplorer: 'https://etherscan.io',
-    contracts: {
-      flow: '',
-      flowPayments: '',
-      flowMultiSigWallet: '',
-      flowDAO: '',
-      flowENSIntegration: '',
-      flowCredentials: '',
-      flowAgentRegistry: '',
-      flowAgentIntegration: ''
-    }
-  },
-  {
-    chainId: 11155111,
-    name: 'Ethereum Sepolia Testnet',
-    rpcUrl: 'https://ethereum-sepolia.publicnode.com',
-    blockExplorer: 'https://sepolia.etherscan.io',
-    contracts: {
-      flow: '0x91F455A6E2ae7458F20bE3ef4c50602281be3A67',
-      flowPayments: '0x89Db2f3428a07d9354fA1915414F2F581Da80188',
-      flowMultiSigWallet: '0x72AF2f41FD7B5C32CCC1Cf4b55098377bf467645',
-      flowDAO: '0xe96e696A770F9c87503D379B8953d1dFda0402Fc',
-      flowENSIntegration: '0x5B9b14c0D1743a63E9D5bb4267B6C1B585420136',
-      flowCredentials: '0x1718df6b9C8BfC821aFdA1249C44eA5a2D8e527b',
-      flowAgentRegistry: '0xc7b84E03054aCC854e866bD86eCb8D4C1B544f4e',
-      flowAgentIntegration: '0x6cA6283a4bcbDBfDEc152F0E12F35788830a54F6'
-    }
-  },
-  {
-    chainId: 31337,
-    name: 'Local Anvil Network',
-    rpcUrl: 'http://127.0.0.1:8545',
-    blockExplorer: '',
-    contracts: {
-      flow: '0x50EEf481cae4250d252Ae577A09bF514f224C6C4',
-      flowPayments: '0x34A1D3fff3958843C43aD80F30b94c510645C316',
-      flowMultiSigWallet: '0x90193C961A926261B756D1E5bb255e67ff9498A1',
-      flowDAO: '0xA8452Ec99ce0C64f20701dB7dD3abDb607c00496',
-      flowENSIntegration: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
-      flowCredentials: '0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496',
-      flowAgentRegistry: '0x5b73C5498c1E3b4dbA84de0F1833c4a029d90519',
-      flowAgentIntegration: '0xDB8cFf278adCCF9E9b5da745B44E754fC4EE3C76'
-    }
+// Sepolia Testnet Configuration
+export const SEPOLIA_NETWORK = {
+  chainId: 11155111,
+  name: 'Ethereum Sepolia Testnet',
+  rpcUrl: 'https://eth-sepolia.g.alchemy.com/v2/__krcmuK9Ex84Kfc9l765YL9ljhsIYmJ',
+  blockExplorer: 'https://sepolia.etherscan.io',
+  ensContracts: {
+    ENSRegistry: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
+    BaseRegistrar: '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85',
+    ETHRegistrarController: '0xfb3cE5D01e0f33f41DbB39035dB9745962F1f968',
+    DNSRegistrar: '0x5a07C75Ae469Bf3ee2657B588e8E6ABAC6741b4f',
+    ReverseRegistrar: '0xA0a1AbcDAe1a2a4A2EF8e9113Ff0e02DD81DC0C6',
+    NameWrapper: '0x0635513f179D50A207757E05759CbD106d7dFcE8',
+    PublicResolver: '0xE99638b40E4Fff0129D56f03b55b6bbC4BBE49b5',
+    UniversalResolver: '0x3c85752a5d47DD09D677C645Ff2A938B38fbFEbA',
+    OffchainDNSResolver: '0x179be112b24ad4cfc392ef8924dfa08c20ad8583'
   }
-];
-
-// Default network (Ethereum Sepolia for testing)
-export const DEFAULT_NETWORK = SUPPORTED_NETWORKS[1]; // Ethereum Sepolia
-
-// Platform configuration
-export const PLATFORM_CONFIG = {
-  name: 'Flow Platform',
-  version: '1.0.0',
-  description: 'AI Agent Financial Operations Platform',
-  initialPlatformId: 1,
-  maxAgentsPerUser: 10,
-  maxCredentialsPerAgent: 50,
-  maxProposalsPerDAO: 100
 };
 
-// Gas settings
-export const GAS_SETTINGS = {
-  defaultGasLimit: 3000000,
-  maxGasPrice: '100000000000', // 100 gwei
-  gasMultiplier: 1.2
-};
+// Default network
+export const DEFAULT_NETWORK = SEPOLIA_NETWORK;
 
-// Fee settings
-export const FEE_SETTINGS = {
-  platformFee: 250, // 2.5% in basis points
-  maxFee: 1000, // 10% in basis points
-  minFee: 50 // 0.5% in basis points
-};
-
-// ENS settings
+// ENS settings for Sepolia
 export const ENS_SETTINGS = {
-  defaultResolver: '0xe24DF601F19e18843a7bA1766E42a0a432D7324C',
-  supportedTLDs: ['.eth', '.test', '.xyz'],
-  maxNameLength: 50
+  defaultResolver: '0xE99638b40E4Fff0129D56f03b55b6bbC4BBE49b5', // Public Resolver
+  supportedTLDs: ['.eth', '.test'],
+  maxNameLength: 50,
+  registrationPrice: '0.01', // ETH for .eth registration
+  minCommitmentAge: 60, // seconds
+  minRegistrationDuration: 28 * 24 * 60 * 60 // 28 days in seconds
+};
+
+// Gas settings optimized for Sepolia
+export const GAS_SETTINGS = {
+  defaultGasLimit: 500000,
+  maxGasPrice: '20000000000', // 20 gwei
+  gasMultiplier: 1.1
 };
 
 // Error messages
@@ -93,7 +45,11 @@ export const ERROR_MESSAGES = {
   CONTRACT_ERROR: 'Smart contract error',
   USER_REJECTED: 'User rejected transaction',
   INVALID_ADDRESS: 'Invalid address format',
-  INVALID_AMOUNT: 'Invalid amount'
+  INVALID_AMOUNT: 'Invalid amount',
+  ENS_NAME_NOT_AVAILABLE: 'ENS name is not available',
+  ENS_NAME_INVALID: 'Invalid ENS name format',
+  ENS_COMMITMENT_NOT_READY: 'Commitment not ready, please wait',
+  ENS_REGISTRATION_EXPIRED: 'ENS registration has expired'
 };
 
 // Success messages
@@ -103,5 +59,8 @@ export const SUCCESS_MESSAGES = {
   CREDENTIAL_ISSUED: 'Credential issued successfully',
   PAYMENT_SENT: 'Payment sent successfully',
   PROPOSAL_CREATED: 'Proposal created successfully',
-  VOTE_CAST: 'Vote cast successfully'
+  VOTE_CAST: 'Vote cast successfully',
+  ENS_NAME_REGISTERED: 'ENS name registered successfully',
+  ENS_NAME_COMMITTED: 'ENS name commitment created successfully',
+  ENS_RESOLVER_SET: 'ENS resolver set successfully'
 };
