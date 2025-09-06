@@ -2,7 +2,7 @@
 import { ethers } from 'ethers';
 import { ENSContractManager } from './contracts';
 import { ENSOperations } from './operations';
-import { ENSAIService, OPENROUTER_API_KEY } from './ai';
+import { ENSAIService } from './ai';
 import { SEPOLIA_NETWORK } from '../../abis/constants';
 
 // Sepolia testnet configuration for ENS resolution
@@ -62,7 +62,12 @@ export class ENSAgent {
     
     // Only initialize AI service on server side
     if (typeof window === 'undefined') {
-      this.aiService = new ENSAIService(this, OPENROUTER_API_KEY);
+      const apiKey = process.env.OPENROUTER_API_KEY;
+      if (apiKey) {
+        this.aiService = new ENSAIService(this, apiKey);
+      } else {
+        console.warn('OPENROUTER_API_KEY not found in environment variables. AI service will not be available.');
+      }
     }
     
     this.isInitialized = true;
@@ -87,7 +92,12 @@ export class ENSAgent {
       
       // Re-initialize AI service with updated agent
       if (typeof window === 'undefined') {
-        this.aiService = new ENSAIService(this, OPENROUTER_API_KEY);
+        const apiKey = process.env.OPENROUTER_API_KEY;
+        if (apiKey) {
+          this.aiService = new ENSAIService(this, apiKey);
+        } else {
+          console.warn('OPENROUTER_API_KEY not found in environment variables. AI service will not be available.');
+        }
       }
       
       this.isInitialized = true;

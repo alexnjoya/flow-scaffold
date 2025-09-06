@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ENSAgent } from '@/services/ensagent/agent';
-import { ENSAIService, createENSAIService, OPENROUTER_API_KEY } from '@/services/ensagent/ai';
+import { ENSAIService, createENSAIService } from '@/services/ensagent/ai';
 import { ChatMessage } from '@/services/ensagent/types';
 import { ethers } from 'ethers';
 
@@ -23,7 +23,7 @@ function getOrCreateUserSession(userAddress?: string) {
     globalAgents.set(sessionKey, agent);
     
     // Create AI service for this session
-    const aiService = createENSAIService(agent, OPENROUTER_API_KEY);
+    const aiService = createENSAIService(agent);
     globalAIServices.set(sessionKey, aiService);
   }
   

@@ -1,5 +1,5 @@
 import { PaymentAgent, createPaymentAgent } from './agent';
-import { PayAIService, createPayAIService, OPENROUTER_API_KEY } from './payai';
+import { PayAIService, createPayAIService } from './payai';
 import { PaymentAgentResponse, ChatMessage, PaymentRequest, BASE_SEPOLIA_NETWORK } from './types';
 import { WalletClient } from 'viem';
 import { paymentENSResolver, PaymentENSResolver } from './ensResolver';
@@ -44,7 +44,7 @@ class PaymentChatIntegrationImpl implements PaymentChatIntegration {
       // Create AI service (only on server side)
       if (typeof window === 'undefined') {
         console.log('Creating PayAI service (server-side)...');
-        this.payAIService = createPayAIService(this.paymentAgent, OPENROUTER_API_KEY);
+        this.payAIService = createPayAIService(this.paymentAgent);
         console.log('PayAI service created successfully');
       } else {
         console.log('Skipping PayAI service creation (client-side) - will use API routes instead');

@@ -841,14 +841,6 @@ Remember: You are a helpful, secure, and knowledgeable payment assistant. Always
   }
 
   /**
-   * Format address for display
-   */
-  private formatAddress(address: string): string {
-    if (!address) return '';
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
-  }
-
-  /**
    * Get help message
    */
   getHelpMessage(): string {
@@ -894,9 +886,20 @@ Just tell me what you'd like to do! For example:
   }
 }
 
-// Export factory function and API key
-export function createPayAIService(paymentAgent: PaymentAgent, apiKey: string): PayAIService {
-  return new PayAIService(paymentAgent, apiKey);
+// Export factory function
+export function createPayAIService(paymentAgent: PaymentAgent, apiKey?: string): PayAIService {
+  const key = apiKey || process.env.OPENROUTER_API_KEY;
+  if (!key) {
+    throw new Error('OPENROUTER_API_KEY environment variable is required for PayAI service');
+  }
+  return new PayAIService(paymentAgent, key);
 }
 
-export const OPENROUTER_API_KEY = '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';
+// Get API key from environment variable
+export function getOpenRouterApiKey(): string {
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) {
+    throw new Error('OPENROUTER_API_KEY environment variable is required. Please add it to your .env.local file.');
+  }
+  return apiKey;
+}

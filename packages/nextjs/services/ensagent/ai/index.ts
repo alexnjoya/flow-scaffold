@@ -1510,9 +1510,19 @@ When calling functions, always explain what you're doing and why.`;
 }
 
 // Export a factory function to create the AI service
-export function createENSAIService(ensAgent: ENSAgent, apiKey: string): ENSAIService {
-  return new ENSAIService(ensAgent, apiKey);
+export function createENSAIService(ensAgent: ENSAgent, apiKey?: string): ENSAIService {
+  const key = apiKey || process.env.OPENROUTER_API_KEY;
+  if (!key) {
+    throw new Error('OPENROUTER_API_KEY environment variable is required for ENS AI service');
+  }
+  return new ENSAIService(ensAgent, key);
 }
 
-// Export the API key for easy access
-export const OPENROUTER_API_KEY = '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';
+// Get API key from environment variable
+export function getOpenRouterApiKey(): string {
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) {
+    throw new Error('OPENROUTER_API_KEY environment variable is required. Please add it to your .env.local file.');
+  }
+  return apiKey;
+}
