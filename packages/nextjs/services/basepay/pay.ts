@@ -287,6 +287,82 @@ export class BasePayService {
     }
   }
 
+  // Get all token balances (ETH and USDC)
+  async getBalances(address: `0x${string}`): Promise<TokenBalance[]> {
+    try {
+      const balances: TokenBalance[] = [];
+
+      // Get ETH balance
+      try {
+        const ethBalance = await this.getETHBalance(address);
+        balances.push({
+          symbol: 'ETH',
+          balance: ethBalance,
+          decimals: 18,
+          address: '0x0000000000000000000000000000000000000000' // ETH native token
+        });
+      } catch (error) {
+        console.error('Error getting ETH balance:', error);
+        balances.push({
+          symbol: 'ETH',
+          balance: '0',
+          decimals: 18,
+          address: '0x0000000000000000000000000000000000000000'
+        });
+      }
+
+      // Get USDC balance
+      try {
+        const usdcBalance = await this.getUSDCBalance(address);
+        const usdcAddress = getContractAddress('USDC', this.chainId) || '';
+        balances.push({
+          symbol: 'USDC',
+          balance: usdcBalance,
+          decimals: 6, // USDC has 6 decimals
+          address: usdcAddress
+        });
+      } catch (error) {
+        console.error('Error getting USDC balance:', error);
+        const usdcAddress = getContractAddress('USDC', this.chainId) || '';
+        balances.push({
+          symbol: 'USDC',
+          balance: '0',
+          decimals: 6,
+          address: usdcAddress
+        });
+      }
+
+      return balances;
+    } catch (error) {
+      console.error('Error getting balances:', error);
+      // Return empty balances instead of throwing
+      return [
+        {
+          symbol: 'ETH',
+          balance: '0',
+          decimals: 18,
+          address: '0x0000000000000000000000000000000000000000'
+        },
+        {
+          symbol: 'USDC',
+          balance: '0',
+          decimals: 6,
+          address: getContractAddress('USDC', this.chainId) || ''
+        }
+      ];
+    }
+  }
+
+  // Get transaction receipt
+  async getTransactionReceipt(hash: `0x${string}`) {
+    try {
+      return await this.publicClient.getTransactionReceipt({ hash });
+    } catch (error) {
+      console.error('Error getting transaction receipt:', error);
+      return null;
+    }
+  }
+
   // Get testnet ETH from faucet
   async getTestnetETH(address: `0x${string}`): Promise<boolean> {
     if (this.chainId !== 84532) { // Only for Base Sepolia

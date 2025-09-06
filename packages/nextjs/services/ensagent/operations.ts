@@ -355,7 +355,7 @@ export class ENSOperations {
   /**
    * Extract ENS name from message
    */
-  private extractNameFromMessage(message: string): string | null {
+  public extractNameFromMessage(message: string): string | null {
     const ensPattern = /([a-z0-9-]+\.eth)/gi;
     const match = message.match(ensPattern);
     return match ? match[0].toLowerCase() : null;
@@ -364,7 +364,7 @@ export class ENSOperations {
   /**
    * Extract duration from message
    */
-  private extractDurationFromMessage(message: string): number | null {
+  public extractDurationFromMessage(message: string): number | null {
     const durationPattern = /(\d+)\s*(day|days|year|years|month|months)/gi;
     const match = message.match(durationPattern);
     
@@ -391,7 +391,7 @@ export class ENSOperations {
   /**
    * Extract record information from message
    */
-  private extractRecordFromMessage(message: string): any | null {
+  public extractRecordFromMessage(message: string): any | null {
     // Extract key-value pairs
     const keyValuePattern = /(\w+)\s*[:=]\s*([^\s]+)/gi;
     const matches = message.match(keyValuePattern);
@@ -477,4 +477,5 @@ export class ENSOperations {
       };
     }
   }
+
 }

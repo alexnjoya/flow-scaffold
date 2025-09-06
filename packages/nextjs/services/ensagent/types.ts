@@ -51,12 +51,22 @@ export interface ENSOperation {
 }
 
 export interface ENSTransaction {
-  hash: string;
-  operation: ENSOperation;
-  status: 'pending' | 'confirmed' | 'failed';
+  hash?: string;
+  operation?: ENSOperation;
+  status?: 'pending' | 'confirmed' | 'failed';
   blockNumber?: number;
   gasUsed?: string;
-  timestamp: Date;
+  timestamp?: Date;
+  type?: string;
+  ensName?: string;
+  duration?: number;
+  cost?: string;
+  owner?: string;
+  recipientAddress?: string;
+  record?: {
+    type: string;
+    value: string;
+  };
 }
 
 export interface ENSAgentConfig {

@@ -171,26 +171,29 @@ export class ENSChatIntegration {
       metadata: {
         ensQuery: this.extractENSName(userMessage),
         action: response.data,
-        confidence: response.success ? 0.9 : 0.1,
-        suggestions: this.getENSSuggestions()
+        confidence: response.success ? 0.9 : 0.1
       }
     };
 
     // Add pending actions if it's a transaction
     if (response.transaction) {
+      const operationType = response.transaction.type || response.data?.type;
+      const ensName = response.transaction.ensName || this.extractENSName(userMessage);
+      const cost = response.data?.costEth || response.data?.price || '0.01 ETH';
+      
       chatMessage.pendingAction = {
         type: 'ens_operation',
-        description: this.getOperationDescription(response.data?.operationType),
-        ensName: this.extractENSName(userMessage),
-        cost: response.data?.price || '0.01 ETH',
+        description: this.getOperationDescription(operationType),
+        ensName: ensName,
+        cost: cost,
         txHash: response.transaction.hash
       };
 
       chatMessage.actions = [{
         type: 'ens_operation',
-        description: this.getOperationDescription(response.data?.operationType),
+        description: this.getOperationDescription(operationType),
         txHash: response.transaction.hash,
-        status: response.transaction.status
+        status: response.transaction.status || 'pending'
       }];
     }
 
@@ -233,7 +236,14 @@ export class ENSChatIntegration {
       'transfer': 'Transferring ENS name',
       'resolve': 'Resolving ENS name',
       'commit': 'Creating commitment',
-      'reveal': 'Revealing commitment'
+      'reveal': 'Revealing commitment',
+      'registration_ready': 'Ready to register ENS name',
+      'renewal_ready': 'Ready to renew ENS name',
+      'set_record_ready': 'Ready to set ENS record',
+      'transfer_ready': 'Ready to transfer ENS name',
+      'name_available': 'ENS name is available',
+      'name_registered': 'ENS name is registered',
+      'general_query': 'ENS name query'
     };
     
     return descriptions[operationType || ''] || 'Processing ENS operation';

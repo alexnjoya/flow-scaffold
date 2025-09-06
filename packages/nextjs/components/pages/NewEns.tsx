@@ -18,7 +18,6 @@ import {
   Search,
   Clock,
   DollarSign,
-  Shield,
   AlertCircle,
   Loader2,
   Info
@@ -56,12 +55,8 @@ const NewEns = () => {
 
   const [isChecking, setIsChecking] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
-  const [isCommitting, setIsCommitting] = useState(false);
   const [priceData, setPriceData] = useState<PriceData | null>(null);
   const [registrationResult, setRegistrationResult] = useState<any>(null);
-  const [commitmentHash, setCommitmentHash] = useState<string | null>(null);
-  const [commitmentTime, setCommitmentTime] = useState<number | null>(null);
-  const [secretBytes, setSecretBytes] = useState<Uint8Array | null>(null);
 
   const handleInputChange = (field: keyof EnsRegistration, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -87,43 +82,8 @@ const NewEns = () => {
       const isAvailable = availabilityResult.data?.available || false;
       
       if (isAvailable) {
-        // Get price directly from contract if wallet is connected
-        if (walletClient) {
-          try {
-            const provider = new ethers.BrowserProvider(walletClient);
-            const controller = new ethers.Contract(
-              SEPOLIA_NETWORK.ensContracts.ETHRegistrarController,
-              CONTRACT_ABIS.ETHRegistrarController,
-              provider
-            );
-            
-            const durationInSeconds = formData.duration * 365 * 24 * 60 * 60;
-            const price = await controller.rentPrice(formData.domainName, durationInSeconds);
-            
-            const priceInfo = {
-              base: ethers.formatEther(price.base),
-              premium: ethers.formatEther(price.premium),
-              total: ethers.formatEther(price.base + price.premium)
-            };
-            
-            setPriceData(priceInfo);
-            setFormData(prev => ({
-              ...prev,
-              isAvailable,
-              price: priceInfo.total,
-              gasEstimate: '0.002' // Estimated gas fee
-            }));
-          } catch (priceError) {
-            console.error('Error getting price:', priceError);
-            setFormData(prev => ({
-              ...prev,
-              isAvailable,
-              price: '0.01', // Fallback price
-              gasEstimate: '0.002'
-            }));
-          }
-        } else {
-          // Fallback to API if no wallet connected
+        // Get price from API (more reliable than direct contract calls)
+        try {
           const priceResponse = await fetch(`/api/ens/name/${encodeURIComponent(fullDomainName)}/price?duration=${formData.duration}`);
           const priceResult = await priceResponse.json();
           
@@ -144,6 +104,14 @@ const NewEns = () => {
               gasEstimate: '0.002'
             }));
           }
+        } catch (apiError) {
+          console.error('Error getting price from API:', apiError);
+          setFormData(prev => ({
+            ...prev,
+            isAvailable,
+            price: '0.01', // Fallback price
+            gasEstimate: '0.002'
+          }));
         }
       } else {
         setFormData(prev => ({
@@ -165,64 +133,9 @@ const NewEns = () => {
     }
   };
 
-  const handleCommit = async () => {
-    if (!formData.isAvailable || !address || !isConnected || !walletClient) return;
-    
-    setIsCommitting(true);
-    setFormData(prev => ({ ...prev, error: null }));
-    
-    try {
-      const fullDomainName = `${formData.domainName}.eth`;
-      const durationInSeconds = formData.duration * 365 * 24 * 60 * 60;
-      
-      // Create provider and signer from wallet client
-      const provider = new ethers.BrowserProvider(walletClient);
-      const signer = await provider.getSigner();
-      
-      // Create contract instance
-      const controller = new ethers.Contract(
-        SEPOLIA_NETWORK.ensContracts.ETHRegistrarController,
-        CONTRACT_ABIS.ETHRegistrarController,
-        signer
-      );
-      
-      const label = formData.domainName;
-      const labelHash = ethers.keccak256(ethers.toUtf8Bytes(label));
-      
-      // Generate a random secret for the commitment (32 bytes)
-      const newSecretBytes = ethers.randomBytes(32);
-      setSecretBytes(newSecretBytes);
-      
-      // Create commitment hash
-      const commitment = ethers.keccak256(
-        ethers.AbiCoder.defaultAbiCoder().encode(
-          ['bytes32', 'address', 'bytes32'],
-          [labelHash, address, newSecretBytes]
-        )
-      );
-      
-      // Submit commitment
-      const tx = await controller.commit(commitment);
-      await tx.wait();
-      
-      setCommitmentHash(commitment);
-      setCommitmentTime(Date.now());
-      
-      console.log('Commitment submitted:', commitment);
-      
-    } catch (error) {
-      console.error('Error creating commitment:', error);
-      setFormData(prev => ({
-        ...prev,
-        error: error instanceof Error ? error.message : 'Failed to create commitment'
-      }));
-    } finally {
-      setIsCommitting(false);
-    }
-  };
 
   const handleRegister = async () => {
-    if (!formData.isAvailable || !address || !isConnected || !walletClient || !commitmentHash) return;
+    if (!formData.isAvailable || !address || !isConnected || !walletClient) return;
     
     setIsRegistering(true);
     setFormData(prev => ({ ...prev, error: null }));
@@ -231,11 +144,6 @@ const NewEns = () => {
       const fullDomainName = `${formData.domainName}.eth`;
       const durationInSeconds = formData.duration * 365 * 24 * 60 * 60;
       
-      // Check if enough time has passed since commitment (60 seconds minimum)
-      if (commitmentTime && Date.now() - commitmentTime < 60000) {
-        throw new Error('Please wait at least 60 seconds after commitment before registering');
-      }
-      
       // Create provider and signer from wallet client
       const provider = new ethers.BrowserProvider(walletClient);
       const signer = await provider.getSigner();
@@ -248,32 +156,33 @@ const NewEns = () => {
       );
       
       const label = formData.domainName;
-      const labelHash = ethers.keccak256(ethers.toUtf8Bytes(label));
       
-      // Use the same secret from commitment
-      if (!secretBytes) {
-        throw new Error('Secret not found. Please create a new commitment.');
+      // Calculate price - use the price from form data or calculate a reasonable estimate
+      let totalPrice;
+      if (priceData && priceData.total) {
+        // Use the price we already calculated
+        totalPrice = ethers.parseEther(priceData.total);
+      } else {
+        // Fallback: calculate a reasonable price estimate
+        // Base price is typically around 0.01 ETH per year
+        const basePricePerYear = ethers.parseEther('0.01');
+        totalPrice = basePricePerYear * BigInt(formData.duration);
       }
       
-      // Calculate price
-      const price = await controller.rentPrice(label, durationInSeconds);
-      const totalPrice = price.base + price.premium;
+      console.log('Using total price for registration:', ethers.formatEther(totalPrice));
       
-      // Register the name using the Registration struct (as per ABI)
-      const registration = {
-        label: label,
-        owner: address,
-        duration: durationInSeconds,
-        secret: secretBytes,
-        resolver: ethers.ZeroAddress, // Use zero address for default resolver
-        data: [], // Empty data array
-        reverseRecord: 1, // 1 for true (reverse record)
-        referrer: ethers.ZeroHash // Zero hash for no referrer
-      };
-      
-      const tx = await controller.register(registration, {
-        value: totalPrice
-      });
+      // Register the name directly
+      const tx = await controller.register(
+        label,
+        address,
+        durationInSeconds,
+        ethers.randomBytes(32), // Generate random secret
+        [], // Empty data array
+        true, // reverseRecord
+        {
+          value: totalPrice
+        }
+      );
       
       // Wait for transaction confirmation
       const receipt = await tx.wait();
@@ -322,9 +231,7 @@ const NewEns = () => {
         } else if (error.message.includes('user rejected')) {
           errorMessage = 'Transaction was rejected by user';
         } else if (error.message.includes('execution reverted')) {
-          errorMessage = 'Transaction failed - domain may not be available or commitment expired';
-        } else if (error.message.includes('commitment')) {
-          errorMessage = 'Commitment not found or expired. Please create a new commitment.';
+          errorMessage = 'Transaction failed - domain may not be available';
         } else {
           errorMessage = error.message;
         }
@@ -362,9 +269,6 @@ const NewEns = () => {
     }));
     setPriceData(null);
     setRegistrationResult(null);
-    setCommitmentHash(null);
-    setCommitmentTime(null);
-    setSecretBytes(null);
   }, [formData.domainName]);
 
   return (
@@ -561,139 +465,43 @@ const NewEns = () => {
             </Card>
           )}
 
-          {/* Security & Features */}
-          {formData.isAvailable && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Shield className="w-5 h-5" />
-                  <span>What You Get</span>
-                </CardTitle>
-                <CardDescription>Features included with your ENS domain</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
-                    <div>
-                      <h4 className="font-medium">Web3 Identity</h4>
-                      <p className="text-sm text-muted-foreground">Use as your universal Web3 username</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
-                    <div>
-                      <h4 className="font-medium">Easy Payments</h4>
-                      <p className="text-sm text-muted-foreground">Receive crypto with your ENS name</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
-                    <div>
-                      <h4 className="font-medium">Subdomains</h4>
-                      <p className="text-sm text-muted-foreground">Create unlimited subdomains</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
-                    <div>
-                      <h4 className="font-medium">DNS Integration</h4>
-                      <p className="text-sm text-muted-foreground">Import DNS records and more</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
 
-          {/* Commitment and Registration Buttons */}
+          {/* Registration Button */}
           {formData.isAvailable && (
-            <div className="space-y-4">
-              {/* Commitment Status */}
-              {commitmentHash && (
-                <div className="p-4 rounded-lg border border-blue-200 bg-blue-50">
-                  <div className="flex items-center space-x-2">
-                    <CheckCircle className="w-5 h-5 text-blue-500" />
-                    <span className="text-blue-700 font-medium">Commitment Created</span>
-                  </div>
-                  <p className="text-blue-600 text-sm mt-1">
-                    Commitment: {commitmentHash.slice(0, 10)}...{commitmentHash.slice(-8)}
-                  </p>
-                  {commitmentTime && (
-                    <p className="text-blue-600 text-xs mt-1">
-                      Created: {new Date(commitmentTime).toLocaleTimeString()}
-                    </p>
-                  )}
-                </div>
-              )}
-
-              {/* Action Buttons */}
-              <div className="flex justify-end space-x-3">
-                <Button variant="outline" className="flex items-center space-x-2">
-                  <Copy className="w-4 h-4" />
-                  <span>Copy Address</span>
-                </Button>
-                
-                {!commitmentHash ? (
-                  <Button 
-                    size="lg" 
-                    className="flex items-center space-x-2"
-                    onClick={handleCommit}
-                    disabled={isCommitting || !isConnected || !address || !walletClient}
-                  >
-                    {isCommitting ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        <span>Creating Commitment...</span>
-                      </>
-                    ) : !isConnected ? (
-                      <>
-                        <AlertCircle className="w-4 h-4" />
-                        <span>Connect Wallet</span>
-                      </>
-                    ) : !walletClient ? (
-                      <>
-                        <AlertCircle className="w-4 h-4" />
-                        <span>Wallet Not Ready</span>
-                      </>
-                    ) : (
-                      <>
-                        <span>Create Commitment</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </>
-                    )}
-                  </Button>
+            <div className="flex justify-end space-x-3">
+              <Button variant="outline" className="flex items-center space-x-2">
+                <Copy className="w-4 h-4" />
+                <span>Copy Address</span>
+              </Button>
+              
+              <Button 
+                size="lg" 
+                className="flex items-center space-x-2"
+                onClick={handleRegister}
+                disabled={isRegistering || !isConnected || !address || !walletClient}
+              >
+                {isRegistering ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Registering...</span>
+                  </>
+                ) : !isConnected ? (
+                  <>
+                    <AlertCircle className="w-4 h-4" />
+                    <span>Connect Wallet</span>
+                  </>
+                ) : !walletClient ? (
+                  <>
+                    <AlertCircle className="w-4 h-4" />
+                    <span>Wallet Not Ready</span>
+                  </>
                 ) : (
-                  <Button 
-                    size="lg" 
-                    className="flex items-center space-x-2"
-                    onClick={handleRegister}
-                    disabled={isRegistering || !isConnected || !address || !walletClient}
-                  >
-                    {isRegistering ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        <span>Registering...</span>
-                      </>
-                    ) : !isConnected ? (
-                      <>
-                        <AlertCircle className="w-4 h-4" />
-                        <span>Connect Wallet</span>
-                      </>
-                    ) : !walletClient ? (
-                      <>
-                        <AlertCircle className="w-4 h-4" />
-                        <span>Wallet Not Ready</span>
-                      </>
-                    ) : (
-                      <>
-                        <span>Register Domain</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </>
-                    )}
-                  </Button>
+                  <>
+                    <span>Register Domain</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
                 )}
-              </div>
+              </Button>
             </div>
           )}
         </div>

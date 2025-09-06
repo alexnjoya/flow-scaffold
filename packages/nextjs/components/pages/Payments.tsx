@@ -70,9 +70,6 @@ const Payments = () => {
     formatAmount,
     getBaseAccountInfo,
     refreshBalances,
-    topUpBaseAccount,
-    topUpBaseAccountWithUSDC,
-    needsTopUp,
     getTestnetETH
   } = useBasePay();
 
@@ -90,13 +87,6 @@ const Payments = () => {
   const [success, setSuccess] = useState<string | null>(null);
   const [txHash, setTxHash] = useState<string | null>(null);
   
-  // Top-up state
-  const [topUpAmount, setTopUpAmount] = useState('');
-  const [topUpToken, setTopUpToken] = useState<'ETH' | 'USDC'>('ETH');
-  const [isToppingUp, setIsToppingUp] = useState(false);
-  const [topUpTxHash, setTopUpTxHash] = useState<string | null>(null);
-  const [topUpSuccess, setTopUpSuccess] = useState(false);
-  const [topUpError, setTopUpError] = useState<string | null>(null);
 
   // Base account state
   const [baseAccountInfo, setBaseAccountInfo] = useState<any>(null);
@@ -113,43 +103,6 @@ const Payments = () => {
     setSuccess(null);
   };
 
-  // Top-up functions
-  const handleTopUp = async () => {
-    if (!topUpAmount || parseFloat(topUpAmount) <= 0) {
-      setTopUpError('Please enter a valid amount');
-      return;
-    }
-
-    setIsToppingUp(true);
-    setTopUpError(null);
-    setTopUpSuccess(false);
-
-    try {
-      const result = topUpToken === 'ETH' 
-        ? await topUpBaseAccount(topUpAmount)
-        : await topUpBaseAccountWithUSDC(topUpAmount);
-
-      setTopUpTxHash(result.hash);
-      setTopUpSuccess(true);
-      setTopUpAmount('');
-      
-      // Refresh balances after top-up
-      await refreshBalances();
-    } catch (err) {
-      setTopUpError(err instanceof Error ? err.message : 'Failed to top up account');
-    } finally {
-      setIsToppingUp(false);
-    }
-  };
-
-  const checkNeedsTopUp = async (amount: string, token: 'ETH' | 'USDC') => {
-    try {
-      return await needsTopUp(amount, token);
-    } catch (err) {
-      console.error('Error checking top-up status:', err);
-      return false;
-    }
-  };
 
   const handleSendPayment = async () => {
     if (!isConnected) {
@@ -632,93 +585,6 @@ const Payments = () => {
             </CardContent>
           </Card>
 
-          {/* Top-up Section */}
-          <Card className="mt-4">
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <Wallet className="w-4 h-4" />
-                <span>Top Up Base Account</span>
-              </CardTitle>
-              <CardDescription>
-                Add funds to your Base smart contract account
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="topUpAmount">Amount</Label>
-                  <Input
-                    id="topUpAmount"
-                    type="number"
-                    step="0.0001"
-                    placeholder="0.05"
-                    value={topUpAmount}
-                    onChange={(e) => setTopUpAmount(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="topUpToken">Token</Label>
-                  <Select value={topUpToken} onValueChange={(value: 'ETH' | 'USDC') => setTopUpToken(value)}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="ETH">ETH</SelectItem>
-                      <SelectItem value="USDC">USDC</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              {topUpError && (
-                <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                  <div className="flex items-center space-x-2">
-                    <AlertCircle className="w-4 h-4 text-red-600" />
-                    <p className="text-sm text-red-800">{topUpError}</p>
-                  </div>
-                </div>
-              )}
-
-              {topUpSuccess && (
-                <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-                  <div className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                    <p className="text-sm text-green-800">
-                      Successfully topped up! 
-                      {topUpTxHash && (
-                        <a 
-                          href={getTransactionUrl(topUpTxHash, chainId)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="ml-2 underline"
-                        >
-                          View on BaseScan
-                        </a>
-                      )}
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              <Button 
-                onClick={handleTopUp}
-                disabled={isToppingUp || !topUpAmount}
-                className="w-full"
-              >
-                {isToppingUp ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Topping Up...
-                  </>
-                ) : (
-                  <>
-                    <Wallet className="w-4 h-4 mr-2" />
-                    Top Up {topUpToken}
-                  </>
-                )}
-              </Button>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Send Payment Form */}

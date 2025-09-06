@@ -130,24 +130,24 @@ export class ENSIntegration {
    * Get help text for your chat interface
    */
   getHelpText(): string {
-    return `🤖 **ENS Agent Commands**
+    return `🤖 ENS Agent Commands
 
-**Name Operations:**
+Name Operations:
 • Check availability: "Is example.eth available?"
 • Register: "Register mydomain.eth for 1 year"
 • Renew: "Renew mydomain.eth for 2 years"
 • Transfer: "Transfer mydomain.eth to 0x..."
 
-**Record Operations:**
+Record Operations:
 • Set text: "Set description for example.eth to 'My site'"
 • Set address: "Set ETH address for example.eth to 0x..."
 • Set resolver: "Set resolver for example.eth to 0x..."
 
-**Resolution:**
+Resolution:
 • Resolve name: "What does vitalik.eth resolve to?"
 • Get info: "Tell me about example.eth"
 
-**Tips:**
+Tips:
 • Always include .eth suffix
 • Use natural language - I understand context
 • Make sure you're connected to Sepolia testnet`;

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useAccount } from "wagmi";
-import { BanknotesIcon, ExternalLinkIcon } from "@heroicons/react/24/outline";
+import { BanknotesIcon, ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import { useWatchBalance } from "~~/hooks/scaffold-eth/useWatchBalance";
 
 /**
@@ -40,7 +40,7 @@ export const FaucetButton = () => {
         {!loading ? (
           <div className="flex items-center gap-1">
             <BanknotesIcon className="h-4 w-4" />
-            <ExternalLinkIcon className="h-3 w-3" />
+            <ArrowTopRightOnSquareIcon className="h-3 w-3" />
           </div>
         ) : (
           <span className="loading loading-spinner loading-xs"></span>

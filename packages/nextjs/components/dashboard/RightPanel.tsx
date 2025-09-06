@@ -1,23 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Globe, CheckCircle, AlertCircle, DollarSign, FileText, Settings, Zap } from "lucide-react";
-
-interface RecentActivity {
-  id: string;
-  title: string;
-  description: string;
-  type: 'ens_registration' | 'ens_resolution' | 'ens_update' | 'payment' | 'credential' | 'transaction' | 'error';
-  timestamp: Date;
-  txHash?: string;
-  ensName?: string;
-  amount?: string;
-  status: 'pending' | 'completed' | 'failed';
-  metadata?: Record<string, any>;
-}
+import { Activity } from "@/services/activities/activityManager";
 
 interface RightPanelProps {
   isRightPanelCollapsed: boolean;
   setIsRightPanelCollapsed: (collapsed: boolean) => void;
-  recentActivities: RecentActivity[];
+  recentActivities: Activity[];
   formatTime: (date: Date) => string;
 }
 

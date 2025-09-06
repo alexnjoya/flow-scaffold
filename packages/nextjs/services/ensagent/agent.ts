@@ -494,4 +494,11 @@ export class ENSAgent {
     }
     return this.aiService.getAgentStats();
   }
+
+  /**
+   * Get operations instance for AI service
+   */
+  getOperations(): ENSOperations {
+    return this.operations;
+  }
 }

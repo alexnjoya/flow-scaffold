@@ -50,6 +50,8 @@ const ENSMessageCard = ({ message, onAction }: ENSMessageCardProps) => {
         return <User className="w-4 h-4" />;
       case 'resolve':
         return <ExternalLink className="w-4 h-4" />;
+      case 'availability_check':
+        return <CheckCircle className="w-4 h-4" />;
       default:
         return <Globe className="w-4 h-4" />;
     }
@@ -82,6 +84,19 @@ const ENSMessageCard = ({ message, onAction }: ENSMessageCardProps) => {
           <p className="text-sm text-muted-foreground">
             {message.content}
           </p>
+
+          {/* Availability Status */}
+          {message.metadata?.action?.type === 'availability_check' && (
+            <div className="flex items-center space-x-2">
+              <span className="text-xs text-muted-foreground">Status:</span>
+              <Badge 
+                variant={message.metadata.action.available ? "default" : "destructive"}
+                className="text-xs"
+              >
+                {message.metadata.action.available ? 'Available' : 'Not Available'}
+              </Badge>
+            </div>
+          )}
 
           {/* ENS Name */}
           {message.metadata?.ensQuery && (
@@ -162,6 +177,54 @@ const ENSMessageCard = ({ message, onAction }: ENSMessageCardProps) => {
                     {suggestion}
                   </Button>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* Availability-specific suggestions */}
+          {message.metadata?.action?.type === 'availability_check' && (
+            <div className="mt-3">
+              <span className="text-xs text-muted-foreground mb-2 block">Next steps:</span>
+              <div className="flex flex-wrap gap-1">
+                {message.metadata.action.available ? (
+                  <>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-xs h-6"
+                      onClick={() => onAction?.(`Register ${message.metadata?.ensQuery}`)}
+                    >
+                      Register Now
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-xs h-6"
+                      onClick={() => onAction?.(`How much does ${message.metadata?.ensQuery} cost?`)}
+                    >
+                      Check Price
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-xs h-6"
+                      onClick={() => onAction?.(`Tell me about ${message.metadata?.ensQuery}`)}
+                    >
+                      Get Info
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-xs h-6"
+                      onClick={() => onAction?.(`Check another name`)}
+                    >
+                      Check Another
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           )}

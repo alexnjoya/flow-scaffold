@@ -3,7 +3,7 @@ export interface Activity {
   id: string;
   title: string;
   description: string;
-  type: 'ens_registration' | 'ens_resolution' | 'ens_update' | 'payment' | 'credential' | 'transaction' | 'error';
+  type: 'ens_registration' | 'ens_resolution' | 'ens_update' | 'ens_availability' | 'payment' | 'credential' | 'transaction' | 'balance_check' | 'error';
   timestamp: Date;
   txHash?: string;
   ensName?: string;
@@ -84,7 +84,9 @@ class ActivityManager {
   // Save activities to localStorage
   private saveActivities() {
     try {
-      localStorage.setItem('ens_activities', JSON.stringify(this.activities));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('ens_activities', JSON.stringify(this.activities));
+      }
     } catch (error) {
       console.error('Failed to save activities:', error);
     }
@@ -93,12 +95,14 @@ class ActivityManager {
   // Load activities from localStorage
   private loadActivities() {
     try {
-      const stored = localStorage.getItem('ens_activities');
-      if (stored) {
-        this.activities = JSON.parse(stored).map((activity: any) => ({
-          ...activity,
-          timestamp: new Date(activity.timestamp)
-        }));
+      if (typeof window !== 'undefined') {
+        const stored = localStorage.getItem('ens_activities');
+        if (stored) {
+          this.activities = JSON.parse(stored).map((activity: any) => ({
+            ...activity,
+            timestamp: new Date(activity.timestamp)
+          }));
+        }
       }
     } catch (error) {
       console.error('Failed to load activities:', error);

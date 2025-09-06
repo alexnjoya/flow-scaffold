@@ -9,6 +9,7 @@ import ChatInput from "./ChatInput";
 import RightPanel from "./RightPanel";
 import TypingIndicator from "./TypingIndicator";
 import { useActivities } from "@/hooks/useActivities";
+import { Activity } from "@/services/activities/activityManager";
 
 interface ChatMessage {
   id: string;
@@ -30,13 +31,7 @@ interface ChatMessage {
   }[];
 }
 
-interface RecentActivity {
-  id: string;
-  title: string;
-  description: string;
-  type: 'transaction' | 'credential' | 'payment';
-  timestamp: Date;
-}
+// Using Activity type from activity manager
 
 export function DashboardInterface() {
   const { address, isConnected } = useAccount();
