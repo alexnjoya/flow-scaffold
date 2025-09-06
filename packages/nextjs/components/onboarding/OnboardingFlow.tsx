@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Wallet, Bot, Users, Globe, DollarSign, Shield, ArrowRight, ArrowLeft } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useFlowWeb3 } from "../../web3";
+import { useAccount, useConnect, useDisconnect, useChainId, useSwitchChain } from "wagmi";
 import { ethers } from "ethers";
 
 const OnboardingFlow = () => {
@@ -19,16 +19,11 @@ const OnboardingFlow = () => {
   const [isDeploying, setIsDeploying] = useState(false);
 
   // Web3 integration
-  const { 
-    isConnected, 
-    account, 
-    network, 
-    connectWallet, 
-    disconnectWallet,
-    switchNetwork,
-    flowContracts,
-    executeFlowAction
-  } = useFlowWeb3();
+  const { isConnected, address: account } = useAccount();
+  const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
+  const chainId = useChainId();
+  const { switchChain } = useSwitchChain();
 
   // Get agent info from URL if activating a specific agent
   const agentName = searchParams.get('agent');

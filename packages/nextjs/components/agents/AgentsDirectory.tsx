@@ -42,8 +42,8 @@ const AgentsDirectory = () => {
         name: "Kwame",
         ens: "kwame.agent.eth",
         role: "Payment Agent",
-        description: "Handles payments, routing, and financial transactions with smart automation.",
-        features: ["Split payments", "Privacy controls", "Rotating addresses", "Cross-chain support"],
+        description: "Handle payments, routing, and financial transactions with smart automation.",
+        features: ["ETH & USDC payments", "ENS integration", "Gasless transactions", "Base network"],
         isActive: true,
         rating: 4.8,
         usageCount: 1250,
@@ -53,9 +53,9 @@ const AgentsDirectory = () => {
         id: "2",
         name: "Ama",
         ens: "ama.agent.eth",
-        role: "Identity Agent",
-        description: "Manages credentials, attestations, and verifiable identity records.",
-        features: ["Credential storage", "Identity verification", "Privacy protection", "Attestation management"],
+        role: "ENS Agent",
+        description: "Manage ENS domains, registration, and blockchain name resolution.",
+        features: ["Domain registration", "Name resolution", "Text records", "Address mapping"],
         isActive: true,
         rating: 4.9,
         usageCount: 890,
@@ -66,8 +66,8 @@ const AgentsDirectory = () => {
         name: "Kofi",
         ens: "kofi.agent.eth",
         role: "Community Agent",
-        description: "Coordinates groups, DAOs, and community activities seamlessly.",
-        features: ["DAO coordination", "Group messaging", "Voting automation", "Savings circles"],
+        description: "Coordinate groups, DAOs, and community activities seamlessly.",
+        features: ["DAO coordination", "Group messaging", "Voting automation", "Community management"],
         isActive: true,
         rating: 4.7,
         usageCount: 650,
@@ -119,7 +119,7 @@ const AgentsDirectory = () => {
   const roles = [
     { value: "all", label: "All Agents", icon: Bot },
     { value: "Payment Agent", label: "Payment", icon: DollarSign },
-    { value: "Identity Agent", label: "Identity", icon: Shield },
+    { value: "ENS Agent", label: "ENS", icon: Shield },
     { value: "Community Agent", label: "Community", icon: Users },
     { value: "AI Assistant", label: "AI Assistant", icon: Bot },
   ];
@@ -133,14 +133,16 @@ const AgentsDirectory = () => {
   }
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="text-center">
-        <h1 className="text-4xl font-bold tracking-tight">AI Agents Directory</h1>
-        <p className="text-xl text-muted-foreground mt-4">
-          Discover and interact with decentralized AI agents on the blockchain
-        </p>
-      </div>
+    <div className="min-h-screen bg-white">
+      <div className="container mx-auto px-4 py-12">
+        <div className="space-y-8">
+          {/* Header */}
+          <div className="text-center">
+            <h1 className="text-4xl font-bold tracking-tight text-black">AI Agents</h1>
+            <p className="text-xl text-gray-600 mt-4">
+              Discover and interact with intelligent agents
+            </p>
+          </div>
 
       {/* Search and Filters */}
       <div className="flex flex-col sm:flex-row gap-4">
@@ -196,15 +198,17 @@ const AgentsDirectory = () => {
         ))}
       </div>
 
-      {filteredAgents.length === 0 && (
-        <div className="text-center py-12">
-          <Bot className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-lg font-medium mb-2">No agents found</h3>
-          <p className="text-muted-foreground">
-            Try adjusting your search terms or filters to find more agents.
-          </p>
+          {filteredAgents.length === 0 && (
+            <div className="text-center py-12">
+              <Bot className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium mb-2 text-black">No agents found</h3>
+              <p className="text-gray-600">
+                Try adjusting your search terms or filters to find more agents.
+              </p>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
